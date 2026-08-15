@@ -869,6 +869,618 @@ The project avoids aggressive deletion of records. Potentially meaningful busine
 **Section B — Power Query Data Cleaning & Transformation: COMPLETED**
 
 The cleaned transaction dataset is now ready to proceed to:
+# 3. Section C — Data Modelling
 
-**Section C — Data Modelling**
+**Marks: 20**
+
+## 3.1 Section C Requirement
+
+The assignment requires the cleaned dataset to be transformed into an appropriate analytical data model.
+
+The model should not simply consist of one large flat table unless there is a convincing technical justification. Since the Online Retail II dataset contains transactional information together with customer, product, location and date attributes, a **Star Schema** was selected as the most appropriate modelling approach.
+
+The final model consists of:
+
+**DimDate**  
+↓  
+**DimCustomer → FactSales ← DimProduct**  
+↓  
+**DimLocation**
+
+The dimensions provide descriptive information, while the fact table contains the transaction-level business measures.
+
 ---
+
+## 3.2 Data Modelling Strategy
+
+The cleaned Power Query output was used as the starting point for the modelling stage.
+
+The modelling process followed these steps:
+
+1. Load the cleaned transaction dataset.
+2. Identify the main transaction table.
+3. Rename the main transaction table to `FactSales`.
+4. Create a `DimCustomer` dimension.
+5. Create a `DimProduct` dimension.
+6. Create a `DimDate` dimension.
+7. Create a `DimLocation` dimension.
+8. Establish appropriate primary/foreign key fields.
+9. Assign appropriate data types.
+10. Establish one-to-many relationships.
+11. Configure single-direction filtering from dimensions to the fact table.
+12. Validate the completed Star Schema.
+13. Recreate `DimProduct` following an issue identified during data type validation.
+
+The objective was to create a model that supports efficient filtering, aggregation and DAX calculations without unnecessary many-to-many relationships or ambiguous filter paths.
+
+---
+
+# 3.3 Main Fact Table — FactSales
+
+### Requirement
+
+The model must identify the main fact table.
+
+### Problem
+
+The cleaned dataset contains individual transaction-line records. These records contain the quantitative information required for sales analysis, including:
+
+- Quantity
+- Price
+- Invoice
+- InvoiceDate
+- StockCode
+- CustomerID
+- Country
+
+### Transformation
+
+The cleaned transaction table was renamed:
+
+**`FactSales`**
+
+### Reason
+
+`FactSales` represents the business events being analysed. Each row corresponds to a transaction line associated with an invoice.
+
+The table therefore forms the centre of the Star Schema.
+
+It contains the transactional measures and foreign keys required to connect the transaction records to the descriptive dimensions.
+
+### Result
+
+The cleaned transaction data was established as the central fact table:
+
+**FactSales**
+
+### 📸 Screenshot Evidence
+
+![Cleaned Dataset Loaded](screenshots/03_model/01_cleaned_dataset_loaded.png)
+
+![FactSales Named](screenshots/03_model/02_fact_sales_named.png)
+
+---
+
+# 3.4 Customer Dimension — DimCustomer
+
+### Requirement
+
+The model should contain appropriate dimension tables where they are relevant to the dataset.
+
+### Problem
+
+Customer information is repeated across many transaction records in the fact table.
+
+For example, the same `CustomerID` may appear on multiple invoices and transaction lines.
+
+Keeping customer attributes directly in the fact table would create unnecessary repetition.
+
+### Transformation
+
+A separate customer dimension was created and named:
+
+**`DimCustomer`**
+
+The customer identifier was used as the key for the dimension.
+
+### Reason
+
+`DimCustomer` provides a dedicated location for customer-level descriptive information.
+
+It allows customer analysis without unnecessarily repeating customer information throughout the transactional table.
+
+It also supports analysis such as:
+
+- Revenue by customer
+- Customer ranking
+- Customer transaction activity
+- Customer-level filtering
+
+### Result
+
+A dedicated `DimCustomer` table was created with a suitable customer key.
+
+### 📸 Screenshot Evidence
+
+![DimCustomer Created](screenshots/03_model/03_dim_customer_created.png)
+
+---
+
+# 3.5 Product Dimension — DimProduct
+
+### Requirement
+
+The model should contain appropriate dimensions for important analytical entities.
+
+### Problem
+
+Product information is repeated across transaction lines.
+
+The `StockCode` identifies products, while `Description` provides the product description.
+
+### Transformation
+
+A dedicated product dimension was created and named:
+
+**`DimProduct`**
+
+The product identifier was used as the key.
+
+### Reason
+
+Products represent an important analytical dimension for the retail dataset.
+
+Separating product information from transaction information makes it possible to analyse:
+
+- Revenue by product
+- Quantity sold by product
+- Product performance
+- Product rankings
+
+### Result
+
+A dedicated `DimProduct` table was created and connected to `FactSales`.
+
+### Revision Note — DimProduct Recreated
+
+During the data type validation stage (Section 3.9), an issue was identified with the initial `DimProduct` dimension. The dimension was subsequently recreated to ensure `StockCode` held a properly distinct set of product keys, preserving the one-to-many relationship required against `FactSales`. The recreation was captured separately and is timestamped after the data type validation screenshots, confirming it was a corrective step rather than part of the original build sequence.
+
+### 📸 Screenshot Evidence
+
+![DimProduct Created](screenshots/03_model/04_dim_product_created.png)
+
+![DimProduct Recreated](screenshots/03_model/04_dim_product_created_Recreated.png)
+
+---
+
+# 3.6 Date Dimension — DimDate
+
+### Requirement
+
+The assignment specifically requires a dedicated Date Table where the dataset supports time analysis.
+
+### Problem
+
+`InvoiceDate` contains transaction date and time information, but using the transaction date directly for all time-based analysis would not provide a complete analytical date dimension.
+
+The project requires analysis of:
+
+- Daily revenue
+- Monthly revenue
+- Revenue trends
+- Time-based comparisons
+
+### Transformation
+
+A dedicated date dimension was created and named:
+
+**`DimDate`**
+
+The date dimension provides the date key required to connect dates with transaction records.
+
+### Reason
+
+A dedicated Date Table provides a consistent time dimension for Power BI analysis and DAX time-intelligence calculations.
+
+It allows the model to organize transactions by meaningful calendar attributes rather than relying only on the raw transaction timestamp.
+
+### Result
+
+A dedicated `DimDate` table was created and used as the model's date dimension.
+
+### 📸 Screenshot Evidence
+
+![DimDate Created](screenshots/03_model/05_dim_Date_created.png)
+
+---
+
+# 3.7 Location Dimension — DimLocation
+
+### Requirement
+
+Dimensions should be created where they provide meaningful analytical value.
+
+### Problem
+
+The `Country` field is repeated across many transaction records.
+
+Country represents an important geographic dimension for the business analysis.
+
+### Transformation
+
+A dedicated location dimension was created and named:
+
+**`DimLocation`**
+
+The country/location identifier was used to connect geographic information to the transaction table.
+
+### Reason
+
+Separating location information into a dimension supports geographic analysis such as:
+
+- Revenue by country
+- Quantity by country
+- Country-level performance
+- Geographic filtering
+
+### Result
+
+A dedicated `DimLocation` table was created for geographic analysis.
+
+### 📸 Screenshot Evidence
+
+![DimLocation Created](screenshots/03_model/05_dim_location_created.png)
+
+---
+
+# 3.8 Primary and Foreign Keys
+
+### Requirement
+
+The model must contain primary/key fields suitable for relationships.
+
+The following key structure was used:
+
+| Dimension | Key | Fact Table Field |
+|---|---|---|
+| `DimCustomer` | `CustomerID` | `FactSales[CustomerID]` |
+| `DimProduct` | `StockCode` | `FactSales[StockCode]` |
+| `DimDate` | Date | `FactSales[InvoiceDate]` / Date field |
+| `DimLocation` | Country/Location key | `FactSales[Country]` |
+
+The dimension tables contain unique values for their respective keys.
+
+The corresponding fields in `FactSales` act as foreign keys.
+
+This structure allows the dimensions to filter the transaction table without introducing unnecessary many-to-many relationships.
+
+---
+
+# 3.9 Data Types
+
+### Requirement
+
+The model must use appropriate data types.
+
+The major modelling fields were checked and assigned appropriate data types.
+
+Examples include:
+
+- `Invoice` → Text
+- `StockCode` → Text
+- `CustomerID` → Text
+- `Description` → Text
+- `Country` → Text
+- `Quantity` → Whole Number
+- `Price` → Decimal Number
+- `InvoiceDate` → Date/Time
+- Date keys → Date
+
+### Reason
+
+Correct data types are necessary for:
+
+- Relationships
+- Filtering
+- Aggregation
+- DAX calculations
+- Date analysis
+
+### Result
+
+The modelling fields use data types appropriate to their analytical roles. It was during this validation pass that the `DimProduct` key issue described in Section 3.5 was identified.
+
+### 📸 Screenshot Evidence
+
+![Model Data Types](screenshots/03_model/06_model_data_types.png)
+
+![Model Data Types 1](screenshots/03_model/06_model_data_types_1.png)
+
+![Model Data Types 2](screenshots/03_model/06_model_data_types_2.png)
+
+![Model Data Types 3](screenshots/03_model/06_model_data_types_3.png)
+
+![Model Data Types 4](screenshots/03_model/06_model_data_types_4.png)
+
+![Model Data Types 5](screenshots/03_model/06_model_data_types_5.png)
+
+---
+
+# 3.10 Table and Field Naming
+
+### Requirement
+
+The model must use clear table and field names.
+
+The following naming convention was adopted:
+
+- `FactSales`
+- `DimCustomer`
+- `DimProduct`
+- `DimDate`
+- `DimLocation`
+
+The `Fact` prefix identifies the transactional table, while the `Dim` prefix identifies descriptive dimensions.
+
+### Reason
+
+This naming convention makes the model easier to understand and maintain.
+
+It also makes the role of each table immediately clear when writing DAX measures and building reports.
+
+---
+
+# 3.11 Relationships
+
+### Requirement
+
+The assignment requires appropriate table relationships and correct relationship cardinality.
+
+The following relationships were established:
+
+### DimCustomer → FactSales
+
+**Cardinality:** One-to-Many
+
+`DimCustomer` contains one record per customer, while a customer can have many transaction records in `FactSales`.
+
+Therefore:
+
+**DimCustomer (1) → FactSales (\*)**
+
+---
+
+### DimProduct → FactSales
+
+**Cardinality:** One-to-Many
+
+`DimProduct` contains one record per product, while a product can appear in many transaction lines.
+
+Therefore:
+
+**DimProduct (1) → FactSales (\*)**
+
+---
+
+### DimDate → FactSales
+
+**Cardinality:** One-to-Many
+
+`DimDate` contains one record per date, while many transactions can occur on the same date.
+
+Therefore:
+
+**DimDate (1) → FactSales (\*)**
+
+---
+
+### DimLocation → FactSales
+
+**Cardinality:** One-to-Many
+
+`DimLocation` contains one record per location/country, while many transaction records can belong to the same country.
+
+Therefore:
+
+**DimLocation (1) → FactSales (\*)**
+
+---
+
+# 3.12 Cross-Filter Direction
+
+### Requirement
+
+The assignment requires appropriate cross-filter direction and specifically warns against inappropriate bidirectional relationships.
+
+The model uses **single-direction filtering** from the dimension tables toward `FactSales`.
+
+The intended filtering pattern is:
+
+**Dimension → FactSales**
+
+For example:
+
+**DimProduct → FactSales**
+
+A product selected in a report therefore filters the relevant transaction records.
+
+The same principle applies to:
+
+- `DimCustomer`
+- `DimDate`
+- `DimLocation`
+
+### Reason
+
+Single-direction filtering reduces the possibility of:
+
+- Ambiguous filter paths
+- Circular filtering
+- Unexpected aggregation behaviour
+- Unnecessary bidirectional relationships
+
+No unnecessary bidirectional relationships were introduced.
+
+---
+
+# 3.13 Avoiding Many-to-Many Relationships
+
+The model was designed to avoid unnecessary many-to-many relationships.
+
+Each dimension provides unique key values, while the fact table contains multiple transaction records associated with those keys.
+
+Therefore, the model follows the standard Star Schema pattern:
+
+**One dimension record → Many fact records**
+
+This produces clean one-to-many relationships and avoids unnecessary many-to-many joins.
+
+---
+
+# 3.14 Dedicated Date Table Usage
+
+`DimDate` was created specifically to support time-based analysis.
+
+The Date dimension acts as the central calendar structure for the model.
+
+This supports the analytical questions defined in Section A, particularly:
+
+- How does revenue change over the six-month period?
+- How does average order value change over time?
+- What are the monthly sales trends?
+
+The Date dimension will also support DAX measures used in the dashboard stage.
+
+---
+
+# 3.15 Final Star Schema
+
+The completed model follows the structure:
+
+```text
+                    DimDate
+                       |
+                       |
+DimCustomer ---- FactSales ---- DimProduct
+                       |
+                       |
+                  DimLocation
+```
+
+`FactSales` is positioned at the centre because it contains the transaction-level business events.
+
+The surrounding dimension tables provide descriptive context for analysing those transactions.
+
+### 📸 Final Model Evidence
+
+![Completed Star Schema 2](screenshots/03_model/07_completed_star_schema_2.png)
+
+The final Model View screenshot provides evidence that the required Star Schema was implemented in Power BI, including the corrected `DimProduct` table.
+
+---
+
+# 3.16 Why This Model Was Selected
+
+A Star Schema was selected because the Online Retail II dataset is fundamentally a transaction-based dataset.
+
+`FactSales` contains the measurable business events, while the dimensions describe the context in which those events occurred.
+
+This structure provides several advantages:
+
+* Reduces unnecessary duplication
+* Separates transactions from descriptive attributes
+* Supports efficient filtering
+* Supports DAX calculations
+* Makes relationships easier to understand
+* Supports scalable dashboard development
+* Reduces the risk of ambiguous filter paths
+
+The model therefore provides a more appropriate analytical structure than keeping all information in a single flat table.
+
+---
+
+# 3.17 Modelling Challenges
+
+Several modelling considerations were addressed during the creation of the Star Schema.
+
+### CustomerID
+
+Some transactions originally had missing CustomerID values. These were handled during Power Query so that valid transactions could be retained without incorrectly removing them.
+
+### Product Identification
+
+`StockCode` was used as the product identifier because it provides the product-level key required to connect product information to transaction records. The initial `DimProduct` table required recreation after data type validation to ensure the key column held fully distinct values.
+
+### Date Analysis
+
+A dedicated `DimDate` table was required because the project includes monthly and time-based analysis.
+
+### Relationship Design
+
+Relationships were configured as one-to-many wherever the dimension contained unique keys and the fact table contained repeated transaction references.
+
+### Filter Direction
+
+Single-direction filtering was selected to reduce ambiguity and avoid unnecessary bidirectional relationships.
+
+---
+
+# 3.18 Section C Requirement Coverage
+
+| Requirement                                     | Implementation                                        | Evidence                 |
+| ------------------------------------------------ | ------------------------------------------------------- | --------------------------- |
+| Main fact table identified                      | `FactSales`                                           | FactSales screenshot     |
+| Dimension tables created                        | `DimCustomer`, `DimProduct`, `DimDate`, `DimLocation` | Dimension screenshots    |
+| Primary/key fields                              | Dimension keys established                            | Model/data-type evidence |
+| Appropriate relationships                       | Dimensions connected to FactSales                     | Final Model View         |
+| Correct cardinality                             | One-to-many relationships                             | Final Model View         |
+| Appropriate cross-filter direction              | Single direction                                      | Final Model View         |
+| Dedicated Date Table                            | `DimDate`                                             | DimDate screenshot       |
+| Correct Date Table usage                        | Used for time analysis                                | Final model              |
+| Appropriate data types                          | Fields validated and typed                            | Data type screenshots    |
+| Clear naming                                    | Fact/Dim naming convention                            | Model View               |
+| Avoid unnecessary many-to-many                  | One-to-many Star Schema                               | Final Model View         |
+| Avoid ambiguous paths                           | Single-direction dimension-to-fact filtering          | Final Model View         |
+| Avoid inappropriate bidirectional relationships | Single-direction relationships                        | Final Model View         |
+| Data quality correction                         | `DimProduct` recreated after validation               | Recreated screenshot     |
+
+---
+
+# 3.19 Section C Evidence
+
+The modelling evidence is consolidated through the screenshots captured during the modelling process:
+
+* Cleaned dataset loaded
+* FactSales created
+* DimCustomer created
+* DimProduct created
+* DimLocation created
+* DimDate created
+* Data types validated
+* DimProduct recreated
+* Completed Star Schema
+
+The final Model View screenshots provide the overall evidence that the tables, keys and relationships were implemented in Power BI.
+
+
+
+# 3.20 Section C Completion Status
+
+**Section C — Data Modelling: COMPLETED**
+
+The cleaned transaction dataset has been transformed into a structured Star Schema consisting of:
+
+**FactSales**
+
+with the supporting dimensions:
+
+**DimCustomer · DimProduct · DimDate · DimLocation**
+
+The model is now ready for the next stage:
+
+**Section D — DAX Measures & Calculations.**
+
+---
+
+# Appendix — Screenshot Evidence Log (Chronological)
+
