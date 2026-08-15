@@ -1478,9 +1478,90 @@ with the supporting dimensions:
 
 The model is now ready for the next stage:
 
-**Section D — DAX Measures & Calculations.**
+# SECTION D — DAX & Business Calculations
+
+## Overview
+
+12 DAX measures were developed in the `_Measures` table to support the Executive Overview, Detailed Analysis, and Diagnostic Insights dashboard pages. All 12 are confirmed in the measure list screenshot below; 6 were selected as principal measures for detailed documentation, as required by the assignment.
+
+### 📸 Main Evidence — All 12 Measures
+
+![All 12 DAX Measures](screenshots/04_dax/13_all_12_measures.png)
+
+This screenshot confirms all 12 measures exist in the `_Measures` table, satisfying the minimum requirement for meaningful DAX measures.
 
 ---
 
-# Appendix — Screenshot Evidence Log (Chronological)
+## 1. All 12 Measures — What Was Done
 
+| # | Measure | Purpose | Key DAX Function(s) | Evidence |
+|---|---|---|---|---|
+| 1 | **Total Sales** | Total sales value (Quantity × Price) | `SUMX()` | ![](screenshots/04_dax/01_total_sales_dax.png) |
+| 2 | **Total Transactions** | Counts transaction rows | `COUNTROWS()` | ![](screenshots/04_dax/02_total_transactions_dax.png) |
+| 3 | **Total Quantity Sold** | Total units sold | `SUM()` | ![](screenshots/04_dax/03_total_quantity_dax.png) |
+| 4 ⭐ | **Average Transaction Value** | Average value per transaction | `DIVIDE()` | ![](screenshots/04_dax/04_average_transaction_value_dax.png) |
+| 5 ⭐ | **Unique Customers** | Distinct identified customers (excludes "Unknown") | `CALCULATE()`, `DISTINCTCOUNT()` | ![](screenshots/04_dax/05_unique_customers_dax.png) |
+| 6 | **Unique Products** | Distinct product count | `DISTINCTCOUNT()` | ![](screenshots/04_dax/06_unique_products_dax.png) |
+| 7 | **Total Countries** | Geographic coverage count | `DISTINCTCOUNT()` | ![](screenshots/04_dax/07_total_countries_dax.png) |
+| 8 | **Average Unit Price** | Average price across selected context | `AVERAGE()` | ![](screenshots/04_dax/08_average_unit_price_dax.png) |
+| 9 ⭐ | **Sales from Identified Customers** | Sales tied to known customer IDs | `CALCULATE()` | ![](screenshots/04_dax/09_identified_customer_sales_dax.png) |
+| 10 | **Sales from Unknown Customers** | Sales tied to missing/"Unknown" IDs | `CALCULATE()` | ![](screenshots/04_dax/10_unknown_customer_sales_dax.png) |
+| 11 | **Sales % of Selected Total** | Share of sales within current filter selection | `DIVIDE()`, `CALCULATE()`, `ALLSELECTED()` | ![](screenshots/04_dax/11_sales_selected_percentage_dax.png) |
+| 12 ⭐ | **Product Sales Rank** | Ranks products by sales, rank 1 = top seller | `RANKX()`, `ALL()` | ![](screenshots/04_dax/12_product_sales_rank_dax.png) |
+
+⭐ = one of the 6 principal measures documented in detail below.
+
+---
+
+## 2. Six Principal Measures — Selected for Detailed Documentation
+
+| Measure | Reason for Selection | Filter Context Behaviour |
+|---|---|---|
+| **Total Sales** | Primary business performance KPI | Responds to date, country, product filters |
+| **Total Transactions** | Measures transaction activity | Responds to all report filters |
+| **Average Transaction Value** | Transaction-level performance context | Both numerator and denominator respond to filters |
+| **Unique Customers** | Measures identifiable customer reach | Excludes `"Unknown"` regardless of filter |
+| **Sales from Identified Customers** | Compares known vs. unknown customer sales | Applies ID condition within active filters |
+| **Product Sales Rank** | Demonstrates advanced ranking/context manipulation | `ALL()` removes product filter for cross-product ranking |
+
+### 📸 Principal Measure Evidence
+
+**1. Total Sales**
+![Total Sales](screenshots/04_dax/01_total_sales_dax.png)
+
+**2. Total Transactions**
+![Total Transactions](screenshots/04_dax/02_total_transactions_dax.png)
+
+**3. Average Transaction Value**
+![Average Transaction Value](screenshots/04_dax/04_average_transaction_value_dax.png)
+
+**4. Unique Customers**
+![Unique Customers](screenshots/04_dax/05_unique_customers_dax.png)
+
+**5. Sales from Identified Customers**
+![Sales from Identified Customers](screenshots/04_dax/09_identified_customer_sales_dax.png)
+
+**6. Product Sales Rank**
+![Product Sales Rank](screenshots/04_dax/12_product_sales_rank_dax.png)
+
+---
+
+## 3. Evidence Folder
+
+```text
+04_dax/
+├── 01_total_sales_dax.png
+├── 02_total_transactions_dax.png
+├── 03_total_quantity_dax.png
+├── 04_average_transaction_value_dax.png
+├── 05_unique_customers_dax.png
+├── 06_unique_products_dax.png
+├── 07_total_countries_dax.png
+├── 08_average_unit_price_dax.png
+├── 09_identified_customer_sales_dax.png
+├── 10_unknown_customer_sales_dax.png
+├── 11_sales_selected_percentage_dax.png
+├── 12_product_sales_rank_dax.png
+├── 13_all_12_measures.png
+└── README.md
+```
