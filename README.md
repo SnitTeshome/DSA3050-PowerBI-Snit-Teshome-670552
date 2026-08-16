@@ -1,85 +1,74 @@
-# DSA3050-PowerBI-Snit-Teshome-670552
+# ***DSA 3050A - Business Intelligence & Data Visualization***
+## ***End Semester Practical Examination***
 
-## DSA3050A Business Intelligence & Data Visualization
-### Power BI Retail Sales Analytics Project
+### **Online Retail II Sales Performance Analysis in Power BI**
 
----
+**Student:** Snit Teshome
 
-# 1. Dataset Selection & Understanding
+**Student ID:** 670552
 
-## 1.1 Dataset Source
+**Software:** Microsoft Power BI Desktop
 
-The dataset used for this Power BI project is the **Online Retail II** dataset from the **UCI Machine Learning Repository**.
+**Dataset:** Online Retail II
+![alt text](image.png)
 
-**Source:** UCI Machine Learning Repository  
-**Dataset:** Online Retail II  
-**Original dataset:** Approximately 1.07 million transaction records  
-**Original period:** December 2009 – December 2011
 
-The original dataset is available from:
+## Project Introduction
 
-https://archive.ics.uci.edu/dataset/502/online%2Bretail%2Bii
+This project develops a Business Intelligence solution using Microsoft Power BI to analyze online retail sales performance, product performance, customer behaviour, geographic distribution, and cancellation activity. The project follows the complete BI workflow, from data acquisition and preparation to data modelling, DAX analysis, interactive dashboard development, and business interpretation.
 
-The original dataset contains transaction-level records from a UK-based registered non-store online retailer. It provides information about invoices, products, quantities, transaction dates, prices, customers and countries.
+The analysis uses a six month subset of the Online Retail II dataset, containing **209,875 transaction line records** from a UK based non store online retailer. The dataset provides information about invoice identification, product identification, product description, quantity purchased, transaction date and time, unit price, customer identification, and customer country, covering the period from **4 January 2010 to 29 June 2010**.
 
----
-
-## 1.2 Dataset Description
-
-The Online Retail II dataset contains transaction-level information from an online retail business.
-
-Each row represents an individual **product transaction line associated with an invoice**. Therefore, one invoice can contain multiple rows when a customer purchases multiple products.
-
-The dataset contains information about:
-
-- Transaction/invoice identification
-- Product identification
-- Product description
-- Quantity purchased
-- Transaction date and time
-- Unit price
-- Customer identification
-- Customer country
-
-This structure makes the dataset appropriate for business intelligence analysis because sales performance can be analyzed across different dimensions such as **time, product, customer and country**.
+The main objective of the project is to transform the raw transaction level data into meaningful business intelligence that can help management understand sales performance, product and customer contribution, geographic distribution of demand, and factors associated with cancellation activity and missing customer information.
 
 ---
 
-## 1.3 Dataset Selection Rationale
+# SECTION A: DATASET SELECTION & UNDERSTANDING
+
+## 1. The Source of the Dataset
+
+The dataset used in this project is the **Online Retail II** dataset from the **UCI Machine Learning Repository**.
+
+**Source:** UCI Machine Learning Repository
+
+**Dataset:** Online Retail II
+
+**Original dataset size:** approximately 1,067,371 transaction records
+
+**Original period:** December 2009 to December 2011
+
+**Available at:** https://archive.ics.uci.edu/dataset/502/online%2Bretail%2Bii
+
+The original dataset contains transaction level records from a UK based, registered, non store online retailer. It provides information about invoices, products, quantities, transaction dates, prices, customers, and countries.
+
+![Dataset Loading](screenshots/01_raw_data/01_loading_preview.png)
+
+*Figure 1: Initial loading of the Online Retail II dataset into Power BI Desktop.*
+
+---
+
+## 2. What the Dataset Represents
+
+The Online Retail II dataset contains transaction level information from an online retail business.
+
+Each row represents an individual **product transaction line** associated with an invoice. Therefore, one invoice can contain multiple rows when a customer purchases multiple products in a single order.
+
+The dataset contains information about transaction and invoice identification, **product identification, product description, quantity purchased, transaction date and time, unit price, customer identification, and customer country.**
+
+This structure makes the dataset appropriate for business intelligence analysis, because sales performance can be examined across multiple dimensions, including **time, product, customer, and country**.
+
+---
+
+## 3. Why This Dataset Was Selected
 
 The Online Retail II dataset was selected because it satisfies the main dataset requirements for the DSA3050A practical examination.
 
-The original dataset contains more than one million records, which is considerably larger than necessary for the practical examination. Therefore, a continuous **six-month analytical window** was selected from the original dataset.
+The original dataset contains more than one million records, which is considerably larger than necessary for a 72 hour practical examination. A continuous `**six month analytical window**` was therefore selected from the original dataset, covering `**4 January 2010 to 29 June 2010**.`
 
-The selected working dataset contains:
 
-**209,875 records and 8 variables.**
+Using a six month scope makes the project manageable within the examination window while still retaining enough records and business complexity to support meaningful analysis.
 
-Using a six-month analytical scope makes the Power BI project more manageable while still retaining enough records and business complexity for meaningful analysis.
-
-The selected period is:
-
-**4 January 2010 – 29 June 2010**
-
-The dataset was intentionally kept in its original transaction-level form rather than using a pre-cleaned or summarized version.
-
-This allows the project to demonstrate actual data profiling, cleaning, transformation, modelling, DAX development and dashboard construction.
-
----
-
-## 1.4 Dataset Size and Scope
-
-### Original Dataset
-
-The original Online Retail II dataset contains approximately:
-
-**1,067,371 transaction records**
-
-covering approximately two years of retail activity.
-
-### Selected Analytical Dataset
-
-For this project, a continuous six-month period was selected to create a manageable analytical scope.
+### Dataset Size and Scope
 
 | Attribute | Value |
 |---|---:|
@@ -93,1104 +82,435 @@ For this project, a continuous six-month period was selected to create a managea
 | Distinct Customer IDs | 2,815 |
 | Countries | 32 |
 
-The selected period provides sufficient scale and analytical diversity while avoiding unnecessary processing of the entire 1+ million-row source dataset.
+![Date Range Verification](screenshots/01_raw_data/04_date_range.png)
+
+*Figure 2: InvoiceDate profiled to verify the six month analytical period.*
 
 ---
 
-## 1.5 Main Variables
-
-The dataset contains the following eight original variables:
+## 4. The Main Variables Available
 
 | Variable | Data Type | Description | Analytical Role |
 |---|---|---|---|
-| `Invoice` | Text / Identifier | Identifies the transaction/invoice | Transaction identifier |
-| `StockCode` | Text / Identifier | Identifies the product | Product identifier |
-| `Description` | Text / Categorical | Describes the product | Product attribute |
+| `Invoice` | Text | Identifies the transaction or invoice | Transaction identifier |
+| `StockCode` | Text | Identifies the product | Product identifier |
+| `Description` | Text | Describes the product | Product attribute |
 | `Quantity` | Numerical | Number of units involved in the transaction | Sales quantity |
-| `InvoiceDate` | Date/Time | Date and time of the transaction | Time dimension |
+| `InvoiceDate` | Date and Time | Date and time of the transaction | Time dimension |
 | `Price` | Numerical | Unit price associated with the transaction | Revenue calculation |
 | `CustomerID` | Identifier | Identifies the customer | Customer dimension |
 | `Country` | Categorical | Country associated with the customer | Geographic dimension |
 
-### Numerical Variables
+The main **numerical variables** are `Quantity` and `Price`. Together these support the calculation of sales related KPIs, since *Sales Amount is calculated as Quantity multiplied by Price*.
 
-The main numerical variables are:
+The main **categorical variables** are `Description` and `Country`. `StockCode` and `Invoice` function primarily as identifiers rather than descriptive categorical variables.
 
-- `Quantity`
-- `Price`
+`InvoiceDate` provides transaction date and time information and supports analysis of daily sales, monthly sales, sales trends, and month over month performance.
 
-These variables can be used to calculate sales-related KPIs.
+The main **identifier variables** are `Invoice`, `StockCode`, and `CustomerID`. These identifiers later support the data model and the relationships between the fact table and the dimension tables described in Section C.
 
-For example:
 
-**Sales Amount = Quantity × Price**
+## 5.The Business and Analytical Problem to Be Investigated
 
-### Categorical Variables
+The central business problem investigated in this project is:
 
-The main categorical variables include:
+> **How can retail management better understand sales performance across time, products, customers, and countries, in order to identify important patterns and areas requiring management attention?**
 
-- `Description`
-- `Country`
-
-`StockCode` and `Invoice` are primarily identifiers rather than descriptive categorical variables.
-
-### Date/Time Variable
-
-`InvoiceDate` provides transaction date and time information and allows the analysis of:
-
-- Daily sales
-- Monthly sales
-- Sales trends
-- Month-over-month performance
-
-### Identifier Variables
-
-The main identifiers are:
-
-- `Invoice`
-- `StockCode`
-- `CustomerID`
-
-These identifiers will later support the data model and relationships between fact and dimension tables.
+The analysis focuses on which products generate the most revenue, which customers contribute most to revenue, which countries generate the highest sales, how revenue changes over time, which products have high or low sales volumes, how average order value changes, and whether cancellations or unusual transactions are affecting reported performance.
 
 ---
+## 6.Analytical Questions
 
-## 1.6 Initial Dataset Quality Assessment
+The Power BI solution aims to answer the following questions:
 
-Before applying any transformations, the dataset was profiled in Power Query using:
+1. **How does revenue change over the six month period?** 
 
-- Column Quality
-- Column Distribution
-- Column Profile
+2. **Which products generate the highest revenue?** 
 
-Column profiling was performed using the **entire dataset** rather than only the default preview rows.
+3. **Which products have the highest sales volume?** 
 
-### Initial findings
+4. **Which countries contribute the most revenue?** 
 
-The raw dataset contains realistic data-quality issues that require investigation before modelling.
+5. **Which customers generate the highest revenue?** 
 
-#### Missing CustomerID
+6. **How does average order value change over time?** 
 
-Approximately **20% of CustomerID values are empty**.
+7. **What transaction patterns or unusual records require attention?** This investigates cancellations, negative quantities, zero prices, missing customer information, and other data quality patterns identified during profiling.
 
-This does not automatically mean that the corresponding sales transactions are invalid. Therefore, these records will not be removed without further investigation.
 
-The impact of missing CustomerID will be considered when performing customer-level analysis.
+## *Transition to Data Preparation*
 
-#### Missing Description
+Having established the dataset, its characteristics, and the key analytical questions, the next stage is to begin the Business Intelligence development process. The raw dataset was loaded into Microsoft Power BI Desktop, where its structure and data quality were examined before applying the cleaning and transformation steps documented in Section B.
 
-The `Description` column contains a small number of missing values, representing **less than 1%** of the records.
 
-These records will be investigated during Power Query rather than being automatically deleted.
+## Initial Data Quality Observations
 
-#### Negative Quantity
-
-Negative quantity values are present.
-
-Negative quantities may represent cancellations, returns or reversed transactions. Therefore, they require investigation before any decision is made to remove them.
-
-#### Cancellation Transactions
-
-Some invoice values begin with `C`, for example:
-
-`C493411`
-
-This indicates a potential cancellation pattern that will be investigated during Power Query.
-
-Rather than automatically deleting these records, the project will determine whether a cancellation indicator should be created.
-
-#### Zero Price Values
-
-The profiling identified:
-
-**2,051 records with Price = 0.**
-
-These records require investigation to determine whether they represent legitimate business cases, special transactions or invalid records.
-
-#### Negative Price Values
-
-The `Price` profile contains negative values and therefore requires further investigation.
-
-The minimum observed value is unusually negative, so the affected records will be examined before deciding whether any transformation is necessary.
-
-#### Test Product Record
-
-The raw dataset contains a record with:
-
-`StockCode = TEST001`
-
-and:
-
-`Description = This is a test product.`
-
-This will be investigated during Power Query to determine whether it represents a genuine business record or a test transaction.
-
-### Initial Quality Assessment
-
-Based on the initial profiling, the dataset is considered to contain **manageable, realistic data-quality issues rather than severe corruption**.
-
-The project will therefore follow a **light and evidence-based cleaning approach**.
-
-No transformation will be performed simply to increase the number of transformations required by the assignment.
-
-Each Power Query transformation will be based on an actual problem identified in the dataset.
-
----
-
-## 1.7 Data Profiling Evidence
-
-The following screenshots document the initial dataset inspection.
-
-### Dataset Loading
-
-The original six-month dataset was loaded into Power BI.
-
-![Dataset Loading](screenshots/01_raw_data/01_loading_preview.png)
-
-### Raw Power Query State
-
-The dataset was opened in Power Query before any transformations were applied.
+Before applying any transformations, the dataset was profiled in Power Query using Column Quality, Column Distribution, and Column Profile, evaluated against the *entire dataset* rather than only the default preview rows.
 
 ![Raw Power Query State](screenshots/01_raw_data/02_power_query_raw_state.png)
 
-### Data Quality Baseline
-
-Column Quality, Column Distribution and Column Profile were enabled to assess the dataset before cleaning.
+*Figure 3: The dataset opened in Power Query before any transformations were applied.*
 
 ![Data Quality Baseline 1](screenshots/01_raw_data/03_data_quality_baseline_1.png)
 
 ![Data Quality Baseline 2](screenshots/01_raw_data/03_data_quality_baseline_2.png)
 
-### Date Range Verification
+*Figure 4: Column Quality, Column Distribution, and Column Profile enabled to assess the dataset before cleaning.*
 
-The `InvoiceDate` column was profiled to verify the analytical period.
+**1. Missing CustomerID.** Approximately 20 percent of CustomerID values were empty. This does not automatically mean the corresponding transactions are invalid, so these records were not removed without further investigation.
 
-![Date Range](screenshots/01_raw_data/04_date_range.png)
+**2.Missing Description.** The Description column contained a small number of missing values, representing less than 1 percent of records. These were investigated during Power Query rather than deleted automatically.
 
-These screenshots provide evidence of the dataset state before Power Query transformations.
+**3.Negative Quantity.** Negative quantity values were present. These may represent cancellations, returns, or reversed transactions, and therefore required investigation before any removal decision.
 
----
+**4.Cancellation Transactions.** Some invoice values begin with the letter `C`, for example `C493411`, indicating a potential cancellation pattern requiring investigation.
 
-## 1.8 Potential KPIs
+**5.Zero Price Values.** Profiling identified **2,051 records** with a Price value of zero, requiring investigation to determine whether they represent legitimate business cases or invalid records.
 
-The dataset supports several meaningful retail KPIs.
+**6.Negative Price Values.** The Price field contained negative values, including one unusually large negative amount, requiring examination before any transformation was applied.
 
-### Total Revenue
+**7.Test Product Record.** A record with StockCode equal to `TEST001` and description *"This is a test product"* was identified, requiring investigation to confirm whether it represents genuine business activity.
 
-Revenue can be calculated using:
+# SECTION B: POWER QUERY, DATA CLEANING AND TRANSFORMATION
 
-**Revenue = Quantity × Price**
+Power Query was used to transform the raw six month dataset into a form suitable for modelling and analysis. Nine significant transformations were applied, each based on a data quality issue identified during the initial profiling in Section A rather than performed to inflate the number of steps.
 
-### Other potential KPIs
+## 1. Correcting Data Types
 
-- Total Revenue
-- Total Quantity Sold
-- Total Orders
-- Total Customers
-- Average Order Value
-- Average Unit Price
-- Revenue per Customer
-- Revenue per Product
-- Cancellation Rate
-- Average Items per Order
-- Monthly Revenue Growth
-- Revenue Contribution by Product
-- Revenue Contribution by Country
+**Problem:** The raw fields were imported with uncertain or default data types. Identifiers, text, numerical values, and date and time information all required explicit typing before filtering, calculations, and modelling could be trusted.
 
-These KPIs will be implemented using DAX after the Power Query and data modelling stages are completed.
+**Transformation:** Power Query was used to explicitly assign appropriate types: `Invoice`, `StockCode`, `Description`, and `CustomerID` were set to Text; `Quantity` was set to Whole Number; `InvoiceDate` was set to Date and Time; `Price` was set to Decimal Number; `Country` was set to Text.
 
----
+**Reason:** Correct data types are required for reliable filtering, comparison, aggregation, and later DAX calculation. `InvoiceDate` in particular must be recognized as a date and time field for time based analysis, and `Quantity` and `Price` must be numeric for sales calculations.
 
-## 1.9 Business / Analytical Problem
-
-The main business problem is to understand **retail sales performance across time, products, customers and countries**.
-
-The Power BI solution will investigate the major drivers of sales performance and identify areas that require management attention.
-
-The analysis will focus on questions such as:
-
-- Which products generate the most revenue?
-- Which customers contribute most to revenue?
-- Which countries generate the highest sales?
-- How does revenue change over time?
-- Which products have high or low sales volumes?
-- How does average order value change?
-- Are cancellations or unusual transactions affecting reported performance?
-
-The final dashboard will convert the transaction-level data into an interactive business intelligence solution that supports decision-making.
-
----
-
-## 1.10 Analytical Questions
-
-The Power BI solution will answer the following analytical questions:
-
-### Question 1
-**How does revenue change over the six-month period?**
-
-This will identify sales trends and changes in monthly performance.
-
-### Question 2
-**Which products generate the highest revenue?**
-
-This will identify the major product-level revenue drivers.
-
-### Question 3
-**Which products have the highest sales volume?**
-
-This will distinguish products that sell large quantities from products that generate high revenue because of higher prices.
-
-### Question 4
-**Which countries contribute the most revenue?**
-
-This will provide a geographic view of business performance.
-
-### Question 5
-**Which customers generate the highest revenue?**
-
-This will identify high-value customers and customer concentration.
-
-### Question 6
-**How does average order value change over time?**
-
-This will help determine whether customers are spending more or less per order.
-
-### Question 7
-**What transaction patterns or unusual records require attention?**
-
-This will investigate cancellations, negative quantities, zero prices, missing customer information and other data-quality patterns identified during profiling.
-# 2. Section B — Power Query: Data Cleaning & Transformation
-
-**Marks: 20**
-
-## 2.1 Section B Requirement
-
-The assignment requires Power Query to be used extensively to transform the raw dataset into a form suitable for analysis.
-
-The examination specifically states that:
-
-> "Simply importing a clean CSV/Excel file and clicking Close & Apply will receive very limited marks."
-
-Therefore, the Power Query process was based on the actual data-quality problems identified during the initial profiling in Section A.
-
-The cleaning approach was **evidence-based**. Transformations were not performed simply to increase the number of steps. Each significant transformation was justified using the structure:
-
-**Problem → Transformation → Reason → Result**
-
-The Power Query workflow includes more than the required **8 significant transformations**.
-
----
-
-# 2.2 Power Query Cleaning Strategy
-
-The main data-quality issues identified during the initial profiling were:
-
-1. Incorrect/uncertain data types
-2. An identified test record (`TEST001`)
-3. Missing and inconsistently formatted `CustomerID` values
-4. Negative quantities
-5. Cancellation transactions
-6. Non-cancellation negative quantities
-7. Zero-price transactions
-8. Negative-price transactions
-9. Duplicate records
-10. The need for final data-quality validation
-
-The transformations were applied sequentially so that each cleaning step builds on the result of the previous step.
-
-The overall workflow was:
-
-**Raw Data**
-↓
-**Correct Data Types**
-↓
-**Remove TEST001**
-↓
-**Clean CustomerID**
-↓
-**Investigate Negative Quantity**
-↓
-**Identify Cancellation Invoices**
-↓
-**Remove Non-Cancellation Negative Quantities**
-↓
-**Investigate/Handle Zero Prices**
-↓
-**Investigate/Handle Negative Prices**
-↓
-**Remove Duplicates**
-↓
-**Final Data Validation**
-↓
-**Clean Analytical Dataset**
-
----
-
-# 2.3 Transformation 1 — Correct Data Types
-
-### Problem
-
-The raw CSV contains fields representing identifiers, text, numerical values and date/time information. These fields must have appropriate data types before filtering, calculations and modelling.
-
-### Transformation
-
-Power Query was used to explicitly assign appropriate data types:
-
-- `Invoice` → Text
-- `StockCode` → Text
-- `Description` → Text
-- `Quantity` → Whole Number
-- `InvoiceDate` → Date/Time
-- `Price` → Decimal Number
-- `CustomerID` → Text
-- `Country` → Text
-
-### Reason
-
-Correct data types ensure that Power Query performs filtering, comparisons, calculations and later DAX operations correctly.
-
-For example, `InvoiceDate` must be recognized as a date/time field for time-based analysis, while `Quantity` must be numeric for sales calculations.
-
-### Result
-
-All eight variables were assigned appropriate analytical data types.
-
-### 📸 Screenshot Evidence
+**Result:** All eight original variables were assigned appropriate analytical data types.
 
 ![Data Type Investigation](screenshots/02_power_query/12_datatype_investigation.png)
 
+*Figure 5: Data type schema confirmed for all fields in the fact table.*
+
 ---
 
-# 2.4 Transformation 2 — Remove TEST001
+## 2. Removing the Test Record
 
-### Problem
+**Problem:** A record with `StockCode` equal to `TEST001` and the description *"This is a test product"* was identified during profiling. Investigation confirmed seven transaction lines carried this test code, sharing an identical description and quantity pattern inconsistent with genuine retail activity.
 
-During the initial data profiling, a record with:
+**Transformation:** The record was filtered out using `Table.SelectRows` on the condition `[StockCode] <> "TEST001"`.
 
-`StockCode = TEST001`
+**Reason:** A test transaction does not represent genuine business activity. Retaining it would distort product counts, transaction counts, and other analytical results derived from `StockCode`.
 
-was identified.
-
-The corresponding description indicated that it was a test product rather than a genuine retail product.
-
-### Transformation
-
-Power Query was used to filter out the record where:
-
-`StockCode = TEST001`
-
-### Reason
-
-A test transaction does not represent a genuine business transaction. Keeping it could affect product counts, transaction counts and other analytical results.
-
-### Result
-
-The identified test record was removed while the remaining valid transactions were retained.
-
-### 📸 Before Transformation
+**Result:** All seven test records were removed while the remaining valid transactions were retained.
 
 ![TEST001 Before Removal](screenshots/02_power_query/01_test_records_before.png)
 
-### 📸 After Transformation
-
 ![TEST001 Removed](screenshots/02_power_query/02_test_records_removed.png)
+
+*Figure 6: Test records isolated before removal, and confirmed absent afterward.*
 
 ---
 
-# 2.5 Transformation 3 — Clean and Standardize CustomerID
+## 3. Cleaning and Standardizing CustomerID
 
-### Problem
+**Problem:** Approximately 20 percent of `CustomerID` values were missing. Among the values that were present, some numeric identifiers carried unnecessary trailing decimal formatting such as `.0`, and some contained leading or trailing whitespace.
 
-The `CustomerID` field contained missing values and inconsistent identifier formatting.
+**Transformation:** The `CustomerID` field was transformed using `Table.TransformColumns` so that missing or blank values were replaced with the label `Unknown`, values ending in `.0` had that suffix removed, and all remaining values were trimmed of whitespace, with the column retyped as text.
 
-Some customer identifiers were also represented with unnecessary decimal formatting such as `.0`.
+**Reason:** A missing `CustomerID` does not mean the associated sale is invalid. Deleting these transactions would remove genuine revenue from the analysis. Representing missing identifiers explicitly as `Unknown` keeps the transaction in the dataset while making the gap in customer identification visible and analyzable, rather than silently discarding it.
 
-### Transformation
-
-The `CustomerID` field was transformed so that:
-
-- Missing values were represented as `Unknown`
-- Blank values were handled
-- Leading/trailing spaces were removed
-- Unnecessary `.0` formatting was removed
-
-### Reason
-
-Missing `CustomerID` values do not necessarily mean that the associated transaction is invalid.
-
-Deleting these transactions would unnecessarily reduce the amount of valid sales information available for analysis.
-
-Representing missing identifiers as `Unknown` allows the transaction to remain in the dataset while clearly indicating that the customer identity is unavailable.
-
-### Result
-
-The `CustomerID` field was standardized while valid transactions with missing customer information were retained.
-
-### 📸 Investigation
+**Result:** `CustomerID` was standardized across the dataset while every transaction with missing customer information was retained rather than deleted.
 
 ![Missing CustomerID Investigation](screenshots/02_power_query/03_missing_customerid_investigation.png)
 
-### 📸 Before Cleaning
-
-![CustomerID Before Cleaning](screenshots/02_power_query/04_missing_customerid_before.png)
-
-### 📸 Query Evidence
+![Missing CustomerID Before Cleaning](screenshots/02_power_query/04_missing_customerid_before.png)
 
 ![CustomerID Query](screenshots/02_power_query/05_missing_customerid_handled_Query.png)
 
-### 📸 After Cleaning
-
 ![CustomerID Handled](screenshots/02_power_query/06_missing_customerid_handled.png)
 
----
-
-# 2.6 Transformation 4 — Investigate Negative Quantities
-
-### Problem
-
-The `Quantity` field contained negative values.
-
-A negative quantity cannot automatically be assumed to be an error because retail datasets may contain returns or cancellation transactions.
-
-### Transformation
-
-All negative quantities were first isolated and investigated.
-
-The invoice identifiers were then examined to determine whether the negative quantity was associated with a cancellation invoice.
-
-### Reason
-
-Automatically deleting every negative quantity could remove legitimate business events.
-
-The analysis therefore distinguished between:
-
-- Negative quantities associated with cancellation invoices
-- Negative quantities that were not cancellation invoices
-
-### Result
-
-Negative quantities were classified before the cleaning decision was made.
-
-### 📸 Investigation Evidence
-
-![Negative Quantity Investigation](screenshots/02_power_query/09_negative_quantity_investigation.png)
-
-### 📸 Summary Evidence
-
-![Negative Quantity Summary](screenshots/02_power_query/10_negative_quantity_summary.png)
+*Figure 7: CustomerID investigated, then standardized so missing values read as Unknown.*
 
 ---
 
-# 2.7 Transformation 5 — Identify and Validate Cancellation Invoices
+## 4. Investigating and Handling Zero Price Transactions
 
-### Problem
+**Problem:** Profiling identified **2,051 records** with a `Price` value of zero. A zero price could represent a legitimate promotional or adjustment transaction, or it could indicate an invalid record, so this required investigation rather than an assumption in either direction.
 
-Some invoice identifiers begin with the letter `C`.
+**Transformation:** Zero price records were isolated using `Table.SelectRows` on `[Price] = 0` and examined separately from cancellation transactions. Records confirmed as invalid, largely lacking a meaningful product description or transaction context, were removed using the complementary filter `[Price] <> 0`.
 
-For example:
+**Reason:** Revenue is calculated as Quantity multiplied by Price, so unexplained zero price records would contribute zero revenue while still inflating transaction and quantity counts, distorting product and revenue performance analysis.
 
-`C493411`
-
-These records represent cancellation transactions and therefore require separate treatment.
-
-### Transformation
-
-Power Query was used to identify invoices beginning with `C`.
-
-The cancellation records were then investigated based on:
-
-- Quantity
-- Price
-- Invoice identifier
-
-### Reason
-
-Cancellation transactions are meaningful business events.
-
-They should not automatically be deleted because the final analysis may need to measure cancellation activity.
-
-### Result
-
-Cancellation transactions were identified and retained as part of the analytical transaction history.
-
-### 📸 Cancellation Investigation
-
-![Cancellation Invoice Investigation](screenshots/02_power_query/11_cancellation_invoice_investigation.png)
-
-### 📸 Cancellation Summary
-
-![Cancellation Summary](screenshots/02_power_query/13_cancellation_summary.png)
-
-### 📸 Cancellation Validation
-
-![Cancellation Validation](screenshots/02_power_query/14_cancellation_validation.png)
-
-### 📸 Final Cancellation Results
-
-![Cancellation Final Results](screenshots/02_power_query/15_cancellation_final_results.png)
-
----
-
-# 2.8 Transformation 6 — Remove Non-Cancellation Negative Quantities
-
-### Problem
-
-After investigating negative quantities, some negative-quantity records were found that were **not cancellation invoices**.
-
-These records could distort quantity and revenue calculations.
-
-### Transformation
-
-The final transaction table was filtered to retain:
-
-- Transactions with non-negative quantities
-- Cancellation invoices
-
-Negative quantities that were not associated with cancellation invoices were removed.
-
-### Reason
-
-This approach preserves legitimate cancellation activity while preventing unexplained negative quantities from distorting the analytical dataset.
-
-### Result
-
-Non-cancellation negative quantities were removed, while cancellation transactions were retained.
-
-### 📸 Evidence
-
-![Negative Quantity Cleaning Evidence](screenshots/02_power_query/10_negative_quantity_summary.png)
-
----
-
-# 2.9 Transformation 7 — Investigate and Handle Zero-Price Transactions
-
-### Problem
-
-The initial profiling identified:
-
-**2,051 records with `Price = 0`.**
-
-A zero price may represent a legitimate business situation or an invalid transaction, so these records required investigation before removal.
-
-### Transformation
-
-Zero-price transactions were isolated and investigated separately from cancellation transactions.
-
-The records determined to be invalid were removed from the final analytical transaction table.
-
-### Reason
-
-Revenue is calculated using:
-
-**Revenue = Quantity × Price**
-
-Therefore, invalid zero-price transactions could affect revenue and product-performance analysis.
-
-The records were investigated before removal rather than being deleted automatically.
-
-### Result
-
-The invalid zero-price records identified during the investigation were removed from the analytical dataset.
-
-### 📸 Investigation Evidence
-
-![Zero Price Investigation](screenshots/02_power_query/08_zero_price_investigation.png)
-
-### 📸 Cleaning Evidence
+**Result:** The invalid zero price records identified during investigation were removed from the analytical dataset.
 
 ![Zero Price Removed](screenshots/02_power_query/07_zero_price_removed.png)
 
+![Zero Price Investigation](screenshots/02_power_query/08_zero_price_investigation.png)
+
+*Figure 8: Zero price records isolated for investigation, then removed from the cleaned dataset.*
+
 ---
 
-# 2.10 Transformation 8 — Investigate and Handle Negative Prices
+## 5. Investigating Negative Quantities
 
-### Problem
+**Problem:** The `Quantity` field contained negative values. A negative quantity could not automatically be assumed to be an error, since retail datasets commonly record returns or cancellations as negative line items.
 
-The `Price` field contained negative values.
+**Transformation:** All negative quantity records were isolated, totaling **5,737 records**. Each record's invoice number was then examined to determine whether it belonged to a cancellation invoice, identified by an `Invoice` value beginning with the letter `C`.
 
-Negative unit prices are not appropriate for ordinary sales revenue calculations and therefore required investigation.
+**Reason:** Automatically deleting every negative quantity would risk removing legitimate cancellation activity. Classifying the records first made it possible to distinguish genuine business events from invalid data.
 
-### Transformation
+**Result:** Of the 5,737 negative quantity records, **4,394 records (76.59 percent)** belonged to confirmed cancellation invoices, and **1,343 records (23.41 percent)** did not. This classification was carried forward into Transformation 7.
 
-Negative-price records were isolated and examined before the invalid records were removed.
+![Negative Quantity Investigation](screenshots/02_power_query/09_negative_quantity_investigation.png)
 
-### Reason
+![Negative Quantity Summary](screenshots/02_power_query/10_negative_quantity_summary.png)
 
-The `Price` field contributes directly to revenue calculations.
+*Figure 9: Negative quantity records classified into cancellation and non cancellation groups.*
 
-Retaining invalid negative prices could produce misleading revenue and product-performance results.
+---
 
-### Result
+## 6. Identifying and Validating Cancellation Invoices
 
-The identified invalid negative-price records were removed from the cleaned analytical dataset.
+**Problem:** Invoice numbers beginning with the letter `C`, for example `C493411`, indicated a cancellation pattern that had not yet been formally confirmed against quantity and price behaviour.
 
-### 📸 Investigation Evidence
+**Transformation:** Invoices beginning with `C` were isolated using `Text.StartsWith` on the trimmed `Invoice` field, then cross checked against `Quantity` and `Price` to confirm that cancellation invoices consistently carried negative quantities with positive prices.
+
+**Reason:** Cancellation transactions are meaningful business events rather than invalid records. The project's analytical questions specifically require cancellation activity to be measurable, so these records needed to be confirmed and preserved rather than discarded.
+
+**Result:** All **4,394 cancellation records** were validated as carrying negative quantity and positive price, and were retained as part of the analytical transaction history.
+
+![Cancellation Invoice Investigation](screenshots/02_power_query/11_cancellation_invoice_investigation.png)
+
+![Cancellation Summary](screenshots/02_power_query/13_cancellation_summary.png)
+
+![Cancellation Validation](screenshots/02_power_query/14_cancellation_validation.png)
+
+![Cancellation Final Results](screenshots/02_power_query/15_cancellation_final_results.png)
+
+*Figure 10: Cancellation invoices isolated, validated, and confirmed as consistent business events.*
+
+---
+
+## 7. Removing Non Cancellation Negative Quantities
+
+**Problem:** Of the 5,737 negative quantity records identified in Transformation 5, **1,343 records** did not belong to a confirmed cancellation invoice and could not be explained as legitimate returns.
+
+**Transformation:** The dataset was filtered to retain records with non negative quantity together with confirmed cancellation invoices, removing negative quantity records that were not part of a cancellation invoice.
+
+**Reason:** This approach preserves the 4,394 legitimate cancellation records while preventing the 1,343 unexplained negative quantity records from distorting quantity and revenue totals elsewhere in the dataset.
+
+**Result:** The 1,343 non cancellation negative quantity records were removed. The dataset stood at **208,525 records** immediately following this step.
+
+![Negative Quantity Cleaning Evidence](screenshots/02_power_query/10_negative_quantity_summary.png)
+
+*Figure 11: Non cancellation negative quantity records removed while cancellation records were retained.*
+
+---
+
+## 8. Investigating and Handling Negative Prices
+
+**Problem:** The `Price` field contained negative values. Investigation isolated exactly **one record**: Invoice `A506401`, StockCode `B`, description *"Adjust bad debt"*, with a Price of **-53,594.36**.
+
+**Transformation:** The negative price record was identified using `each [Price] < 0` and removed using the complementary filter `each [Price] >= 0`.
+
+**Reason:** This record is a manual accounting adjustment rather than a product sale. Its magnitude is large enough that retaining it would materially distort total revenue and average transaction value, and its structure, a single line item with no matching product description, does not represent a normal transaction.
+
+**Result:** The single invalid negative price record was removed from the cleaned analytical dataset.
 
 ![Negative Price Investigation](screenshots/02_power_query/16_negative_price_investigation.png)
 
-### 📸 Cleaning Evidence
-
 ![Negative Price Removed](screenshots/02_power_query/17_removed_negative_price.png)
+
+*Figure 12: The single negative price record identified as a bad debt adjustment, then removed.*
 
 ---
 
-# 2.11 Transformation 9 — Remove Duplicate Records
+## 9. Removing Duplicate Records
 
-### Problem
+**Problem:** Investigation using `Table.Group` identified **2,359 duplicate groups**, representing **2,499 extra duplicate rows** beyond the first occurrence of each transaction line.
 
-Duplicate transaction records can cause the same transaction line to be counted more than once.
+**Transformation:** `Table.Distinct` was applied to the cleaned dataset to remove the confirmed duplicate rows while preserving one instance of each distinct transaction.
 
-This can artificially increase:
+**Reason:** Each valid transaction line should contribute once to revenue, quantity, and transaction totals. The 2,499 duplicate rows would otherwise double count these figures across product, customer, and country level analysis.
 
-- Revenue
-- Quantity
-- Transaction counts
-- Product performance
-- Customer performance
-
-### Transformation
-
-Duplicate records were investigated in Power Query and confirmed duplicate records were removed.
-
-### Reason
-
-Each valid transaction line should contribute only once to the analytical dataset.
-
-Removing confirmed duplicates prevents double counting while preserving distinct legitimate transactions.
-
-### Result
-
-Confirmed duplicate records were removed.
-
-### 📸 Duplicate Investigation
+**Result:** The 2,499 duplicate rows were removed, leaving only distinct legitimate transaction records in the dataset.
 
 ![Duplicate Investigation](screenshots/02_power_query/18_duplicate_investigation.png)
 
-### 📸 Duplicates Removed
-
 ![Duplicates Removed](screenshots/02_power_query/19_removed_duplicates.png)
 
----
-
-# 2.12 Final Data Quality Validation
-
-After completing the significant Power Query transformations, the cleaned transaction table was subjected to a final validation.
-
-The purpose of this step was to verify that:
-
-- The identified test record was removed
-- CustomerID was handled consistently
-- Non-cancellation negative quantities were removed
-- Valid cancellation transactions were retained
-- Invalid price records were handled
-- Duplicate records were removed
-- Data types remained appropriate
-- The final dataset was suitable for modelling and analysis
-
-### Result
-
-The final transaction table represents the cleaned analytical dataset that will be used for the subsequent **Data Modelling** stage.
-
-### 📸 Final Power Query Validation
-
-![Final Power Query Cleaning Validation](screenshots/02_power_query/20_power_query_final_cleaning_validation.png)
+*Figure 13: Duplicate groups quantified, then collapsed to distinct records using Table.Distinct.*
 
 ---
 
-# 2.13 Complete Power Query Applied Steps
+## Final Data Quality Validation
 
-The individual screenshots above provide evidence for the important transformation decisions.
+After the nine transformations above, the cleaned transaction table was checked against a final validation filter confirming that `Invoice`, `StockCode`, and `InvoiceDate` contained no null values, and that `Price` was non negative across every remaining record.
 
-The final screenshot below provides evidence of the **complete Power Query workflow**, showing that the transformations were actually applied sequentially rather than simply describing them in the README.
+![Final Power Query Validation](screenshots/02_power_query/20_power_query_final_cleaning_validation.png)
 
-### 📸 Complete Applied Steps
+*Figure 14: Final validation filter applied, confirming the dataset is ready for the Data Modelling stage.*
 
-![Complete Power Query Applied Steps](screenshots/02_power_query/20_power_query_final_cleaning_validation.png)
-
----
-
-# 2.14 Section B — Transformation Summary
-
-The following table demonstrates that the Power Query work satisfies the examination requirement of documenting significant transformations using:
-
-**Problem → Transformation → Reason → Result**
+## Power Query Transformation Summary
 
 | # | Problem | Transformation | Reason | Result |
 |---|---|---|---|---|
-| 1 | Fields required appropriate analytical types | Corrected data types | Ensure reliable filtering, calculations and modelling | Consistent data types |
-| 2 | `TEST001` identified as a test record | Removed `TEST001` | Prevent test data from affecting analysis | Test record removed |
-| 3 | Missing/inconsistent CustomerID values | Cleaned and standardized CustomerID | Preserve valid transactions while standardizing identifiers | CustomerID standardized |
-| 4 | Negative quantities identified | Investigated negative quantities | Distinguish cancellations from invalid negatives | Negative quantities classified |
-| 5 | Cancellation invoices identified | Isolated and validated `C...` invoices | Preserve meaningful cancellation activity | Cancellation records retained |
-| 6 | Non-cancellation negative quantities identified | Removed non-cancellation negatives | Prevent invalid quantities from distorting analysis | Invalid negative quantities removed |
-| 7 | Zero-price records identified | Investigated and handled invalid zero-price records | Protect revenue calculations | Invalid zero-price records removed |
-| 8 | Negative prices identified | Investigated and removed invalid negative prices | Prevent distorted revenue calculations | Invalid negative-price records removed |
-| 9 | Duplicate records identified | Removed confirmed duplicates | Prevent double counting | Duplicate records removed |
-| 10 | Final cleaned dataset required | Performed final validation | Confirm cleaning decisions and dataset integrity | Dataset ready for modelling |
+| 1 | Uncertain data types | Corrected all field types | Ensure reliable filtering, calculation, and modelling | Consistent data types across all fields |
+| 2 | Test record present | Removed StockCode TEST001 | Prevent test data from affecting analysis | Seven test records removed |
+| 3 | Missing or inconsistent CustomerID | Standardized CustomerID, labelled missing as Unknown | Preserve valid transactions while flagging missing identity | CustomerID standardized |
+| 4 | Zero price records present | Investigated and removed invalid zero price records | Protect revenue calculations | 2,051 zero price records investigated, invalid records removed |
+| 5 | Negative quantities present | Investigated and classified negative quantities | Distinguish cancellations from invalid negatives | 5,737 records classified: 4,394 cancellation, 1,343 non cancellation |
+| 6 | Cancellation invoices unconfirmed | Isolated and validated invoices beginning with C | Preserve meaningful cancellation activity | 4,394 cancellation records validated and retained |
+| 7 | Non cancellation negative quantities present | Removed 1,343 non cancellation negatives | Prevent invalid quantities distorting totals | Dataset reduced to 208,525 records |
+| 8 | Negative price record present | Investigated and removed the invalid negative price record | Prevent a large distortion in revenue figures | One bad debt adjustment record removed |
+| 9 | Duplicate records present | Removed 2,499 confirmed duplicate rows | Prevent double counting | Duplicate rows removed, distinct transactions retained |
+
+## *Transition to Data Modelling*
+
+The Power Query stage transformed the raw six month dataset into a cleaner, analysis ready structure by addressing nine distinct data quality issues, each investigated before any record was removed. With the data prepared, the next stage is data modelling, where the cleaned data is organized into a Star Schema, relationships are established between the fact table and its dimensions, and a dedicated Date table is created to support the time based analysis required by the project's analytical questions.
 
 ---
 
-# 2.15 Section B Marking Criteria Coverage
+# SECTION C: DATA MODELLING
 
-The Power Query work addresses the examination requirements as follows:
+The cleaned transaction dataset was transformed into a Star Schema rather than kept as a single flat table. `FactSales` contains the transactional business events at the centre of the model, while `DimCustomer`, `DimProduct`, `DimDate`, and `DimLocation` provide the descriptive attributes used to filter and analyze those events. One to many relationships were established between each dimension and the fact table.
 
-### ✔ Extensive Power Query Use
+## 1. Identification of the Main Fact Table
 
-The raw transaction dataset was transformed through multiple sequential Power Query steps rather than simply importing the CSV and loading it directly.
+**Problem:** The cleaned dataset consisted of individual transaction line records containing `Quantity`, `Price`, `Invoice`, `InvoiceDate`, `StockCode`, `CustomerID`, and `Country`, but had not yet been formally established as the analytical fact table.
 
-### ✔ Transformations Based on Actual Problems
+**Transformation:** The cleaned transaction table was renamed to `FactSales`.
 
-Each major transformation was based on an issue identified during the initial dataset profiling in Section A.
+**Result:** The cleaned transaction data was established as the central fact table of the Star Schema.
 
-### ✔ At Least 8 Significant Transformations
+#### *Why FactSales Was Selected*
 
-More than eight significant transformations have been documented.
-
-### ✔ Problem → Transformation → Reason → Result
-
-Every significant transformation is explicitly documented using the required structure.
-
-### ✔ Screenshot Evidence
-
-Screenshots are included immediately after the relevant transformation to demonstrate the actual Power Query work.
-
-### ✔ Final Applied Steps Evidence
-
-The final Power Query screenshot demonstrates the complete sequence of transformations applied to the dataset.
-
-### ✔ Evidence-Based Cleaning
-
-The project avoids aggressive deletion of records. Potentially meaningful business events, particularly cancellations, were investigated before cleaning decisions were made.
-
----
-
-# 2.16 Section B Completion Status
-
-**Section B — Power Query Data Cleaning & Transformation: COMPLETED**
-
-The cleaned transaction dataset is now ready to proceed to:
-# 3. Section C — Data Modelling
-
-**Marks: 20**
-
-## 3.1 Section C Requirement
-
-The assignment requires the cleaned dataset to be transformed into an appropriate analytical data model.
-
-The model should not simply consist of one large flat table unless there is a convincing technical justification. Since the Online Retail II dataset contains transactional information together with customer, product, location and date attributes, a **Star Schema** was selected as the most appropriate modelling approach.
-
-The final model consists of:
-
-**DimDate**  
-↓  
-**DimCustomer → FactSales ← DimProduct**  
-↓  
-**DimLocation**
-
-The dimensions provide descriptive information, while the fact table contains the transaction-level business measures.
-
----
-
-## 3.2 Data Modelling Strategy
-
-The cleaned Power Query output was used as the starting point for the modelling stage.
-
-The modelling process followed these steps:
-
-1. Load the cleaned transaction dataset.
-2. Identify the main transaction table.
-3. Rename the main transaction table to `FactSales`.
-4. Create a `DimCustomer` dimension.
-5. Create a `DimProduct` dimension.
-6. Create a `DimDate` dimension.
-7. Create a `DimLocation` dimension.
-8. Establish appropriate primary/foreign key fields.
-9. Assign appropriate data types.
-10. Establish one-to-many relationships.
-11. Configure single-direction filtering from dimensions to the fact table.
-12. Validate the completed Star Schema.
-13. Recreate `DimProduct` following an issue identified during data type validation.
-
-The objective was to create a model that supports efficient filtering, aggregation and DAX calculations without unnecessary many-to-many relationships or ambiguous filter paths.
-
----
-
-# 3.3 Main Fact Table — FactSales
-
-### Requirement
-
-The model must identify the main fact table.
-
-### Problem
-
-The cleaned dataset contains individual transaction-line records. These records contain the quantitative information required for sales analysis, including:
-
-- Quantity
-- Price
-- Invoice
-- InvoiceDate
-- StockCode
-- CustomerID
-- Country
-
-### Transformation
-
-The cleaned transaction table was renamed:
-
-**`FactSales`**
-
-### Reason
-
-`FactSales` represents the business events being analysed. Each row corresponds to a transaction line associated with an invoice.
-
-The table therefore forms the centre of the Star Schema.
-
-It contains the transactional measures and foreign keys required to connect the transaction records to the descriptive dimensions.
-
-### Result
-
-The cleaned transaction data was established as the central fact table:
-
-**FactSales**
-
-### 📸 Screenshot Evidence
+`FactSales` was selected as the central fact table because each row represents an individual, measurable business event: one product line within one transaction. It contains the quantitative measures `Quantity` and `Price`, together with the foreign keys required to connect each transaction line to its customer, product, date, and location context. This makes `FactSales` the table from which every business performance indicator in the project is ultimately calculated.
 
 ![Cleaned Dataset Loaded](screenshots/03_model/01_cleaned_dataset_loaded.png)
 
 ![FactSales Named](screenshots/03_model/02_fact_sales_named.png)
 
+*Figure 15: The cleaned transaction table renamed and established as FactSales.*
+
 ---
 
-# 3.4 Customer Dimension — DimCustomer
+## 2. Creation of Dimension Tables
 
-### Requirement
+A Star Schema was developed around `FactSales`. Four dimensions were created based on the analytical requirements of the project.
 
-The model should contain appropriate dimension tables where they are relevant to the dataset.
+### DimCustomer
 
-### Problem
+`DimCustomer` contains the unique customer identifiers present in the dataset.
 
-Customer information is repeated across many transaction records in the fact table.
+**Key:** `CustomerID`
 
-For example, the same `CustomerID` may appear on multiple invoices and transaction lines.
+#### *Why DimCustomer Was Created*
 
-Keeping customer attributes directly in the fact table would create unnecessary repetition.
-
-### Transformation
-
-A separate customer dimension was created and named:
-
-**`DimCustomer`**
-
-The customer identifier was used as the key for the dimension.
-
-### Reason
-
-`DimCustomer` provides a dedicated location for customer-level descriptive information.
-
-It allows customer analysis without unnecessarily repeating customer information throughout the transactional table.
-
-It also supports analysis such as:
-
-- Revenue by customer
-- Customer ranking
-- Customer transaction activity
-- Customer-level filtering
-
-### Result
-
-A dedicated `DimCustomer` table was created with a suitable customer key.
-
-### 📸 Screenshot Evidence
+`CustomerID` repeats across many transaction lines in `FactSales`, since the same customer can place multiple orders. Separating customer information into its own dimension avoids repeating this attribute throughout the fact table and supports customer level analysis, including revenue by customer, customer ranking, and the comparison between identified and unknown customer sales used on the Diagnostic Insights dashboard page.
 
 ![DimCustomer Created](screenshots/03_model/03_dim_customer_created.png)
 
+*Figure 16: DimCustomer created with CustomerID as its key.*
+
 ---
 
-# 3.5 Product Dimension — DimProduct
+### DimProduct
 
-### Requirement
+`DimProduct` contains the unique product records, identified by `StockCode` with `Description` as an associated attribute.
 
-The model should contain appropriate dimensions for important analytical entities.
+**Key:** `StockCode`
 
-### Problem
+#### *Why DimProduct Was Created*
 
-Product information is repeated across transaction lines.
+`StockCode` and `Description` repeat across every transaction line involving the same product. Separating product information into its own dimension supports revenue by product, quantity sold by product, and the product ranking used by the `Product Sales Rank` measure.
 
-The `StockCode` identifies products, while `Description` provides the product description.
-
-### Transformation
-
-A dedicated product dimension was created and named:
-
-**`DimProduct`**
-
-The product identifier was used as the key.
-
-### Reason
-
-Products represent an important analytical dimension for the retail dataset.
-
-Separating product information from transaction information makes it possible to analyse:
-
-- Revenue by product
-- Quantity sold by product
-- Product performance
-- Product rankings
-
-### Result
-
-A dedicated `DimProduct` table was created and connected to `FactSales`.
-
-### Revision Note — DimProduct Recreated
-
-During the data type validation stage (Section 3.9), an issue was identified with the initial `DimProduct` dimension. The dimension was subsequently recreated to ensure `StockCode` held a properly distinct set of product keys, preserving the one-to-many relationship required against `FactSales`. The recreation was captured separately and is timestamped after the data type validation screenshots, confirming it was a corrective step rather than part of the original build sequence.
-
-### 📸 Screenshot Evidence
+**Revision note.** During the data type validation stage, an issue was identified with the initial `DimProduct` table: `StockCode` did not hold a fully distinct set of product keys, which would have compromised the one to many relationship against `FactSales`. `DimProduct` was recreated to correct this before the model was finalized. The recreation is timestamped after the data type validation screenshots below, confirming it was a corrective step rather than part of the original build sequence.
 
 ![DimProduct Created](screenshots/03_model/04_dim_product_created.png)
 
 ![DimProduct Recreated](screenshots/03_model/04_dim_product_created_Recreated.png)
 
+*Figure 17: DimProduct as originally created, and again after correction.*
+
 ---
 
-# 3.6 Date Dimension — DimDate
+### DimDate
 
-### Requirement
+A dedicated `DimDate` table was created because the dataset contains extensive date and time information and the project requires monthly and time based analysis.
 
-The assignment specifically requires a dedicated Date Table where the dataset supports time analysis.
+**Key:** Date
 
-### Problem
+#### *Why DimDate Was Created*
 
-`InvoiceDate` contains transaction date and time information, but using the transaction date directly for all time-based analysis would not provide a complete analytical date dimension.
-
-The project requires analysis of:
-
-- Daily revenue
-- Monthly revenue
-- Revenue trends
-- Time-based comparisons
-
-### Transformation
-
-A dedicated date dimension was created and named:
-
-**`DimDate`**
-
-The date dimension provides the date key required to connect dates with transaction records.
-
-### Reason
-
-A dedicated Date Table provides a consistent time dimension for Power BI analysis and DAX time-intelligence calculations.
-
-It allows the model to organize transactions by meaningful calendar attributes rather than relying only on the raw transaction timestamp.
-
-### Result
-
-A dedicated `DimDate` table was created and used as the model's date dimension.
-
-### 📸 Screenshot Evidence
+`InvoiceDate` alone provides a raw timestamp but not a structured calendar attribute set. A dedicated Date table provides consistent year, month, and date attributes that can be used to filter and aggregate `FactSales` by calendar period, and it supports the monthly trend visuals used throughout the dashboard.
 
 ![DimDate Created](screenshots/03_model/05_dim_Date_created.png)
 
+*Figure 18: DimDate created as the model's dedicated calendar dimension.*
+
 ---
 
-# 3.7 Location Dimension — DimLocation
+### DimLocation
 
-### Requirement
+`DimLocation` contains the unique country values associated with transactions.
 
-Dimensions should be created where they provide meaningful analytical value.
+**Key:** Country
 
-### Problem
+#### *Why DimLocation Was Created*
 
-The `Country` field is repeated across many transaction records.
-
-Country represents an important geographic dimension for the business analysis.
-
-### Transformation
-
-A dedicated location dimension was created and named:
-
-**`DimLocation`**
-
-The country/location identifier was used to connect geographic information to the transaction table.
-
-### Reason
-
-Separating location information into a dimension supports geographic analysis such as:
-
-- Revenue by country
-- Quantity by country
-- Country-level performance
-- Geographic filtering
-
-### Result
-
-A dedicated `DimLocation` table was created for geographic analysis.
-
-### 📸 Screenshot Evidence
+`Country` repeats across many transaction records. Separating location information into its own dimension supports geographic revenue analysis and the country level slicer and charts used on every dashboard page.
 
 ![DimLocation Created](screenshots/03_model/05_dim_location_created.png)
 
+*Figure 19: DimLocation created as the model's geographic dimension.*
+
 ---
 
-# 3.8 Primary and Foreign Keys
-
-### Requirement
-
-The model must contain primary/key fields suitable for relationships.
-
-The following key structure was used:
+## 3. Primary and Foreign Keys
 
 | Dimension | Key | Fact Table Field |
 |---|---|---|
 | `DimCustomer` | `CustomerID` | `FactSales[CustomerID]` |
 | `DimProduct` | `StockCode` | `FactSales[StockCode]` |
-| `DimDate` | Date | `FactSales[InvoiceDate]` / Date field |
-| `DimLocation` | Country/Location key | `FactSales[Country]` |
+| `DimDate` | Date | `FactSales[InvoiceDate]` |
+| `DimLocation` | Country | `FactSales[Country]` |
 
-The dimension tables contain unique values for their respective keys.
+Each dimension table contains unique values for its key. The corresponding fields in `FactSales` act as foreign keys, allowing each dimension to filter the transaction table without introducing many to many relationships.
 
-The corresponding fields in `FactSales` act as foreign keys.
+## 4. Table Relationships
 
-This structure allows the dimensions to filter the transaction table without introducing unnecessary many-to-many relationships.
+```text
+                    DimDate
+                       |
+                       |
+DimCustomer ---- FactSales ---- DimProduct
+                       |
+                       |
+                  DimLocation
+```
 
----
+## 5. Relationship Cardinality
 
-# 3.9 Data Types
+**DimCustomer to FactSales.** One to many. `DimCustomer` contains one record per customer, while a customer can appear on many transaction lines in `FactSales`. Therefore, DimCustomer (1) to FactSales (many).
 
-### Requirement
+**DimProduct to FactSales.** One to many. `DimProduct` contains one record per product, while a product can appear on many transaction lines. Therefore, DimProduct (1) to FactSales (many).
 
-The model must use appropriate data types.
+**DimDate to FactSales.** One to many. `DimDate` contains one record per date, while many transactions can occur on the same date. Therefore, DimDate (1) to FactSales (many).
 
-The major modelling fields were checked and assigned appropriate data types.
+**DimLocation to FactSales.** One to many. `DimLocation` contains one record per country, while many transaction records can belong to the same country. Therefore, DimLocation (1) to FactSales (many).
 
-Examples include:
+Each relationship follows the standard Star Schema pattern of one dimension record relating to many fact records, avoiding unnecessary many to many joins.
 
-- `Invoice` → Text
-- `StockCode` → Text
-- `CustomerID` → Text
-- `Description` → Text
-- `Country` → Text
-- `Quantity` → Whole Number
-- `Price` → Decimal Number
-- `InvoiceDate` → Date/Time
-- Date keys → Date
+## 6. Cross Filter Direction
 
-### Reason
+All relationships use single direction filtering, flowing from each dimension table toward `FactSales`. For example, a country selected in a slicer filters the related transaction records in `FactSales`, but a filter on `FactSales` does not flow back to filter `DimLocation`. Single direction filtering was selected to reduce the possibility of ambiguous filter paths, circular filtering, and unexpected aggregation behaviour that unnecessary bidirectional relationships can introduce.
 
-Correct data types are necessary for:
+## 7. Dedicated Date Table Usage
 
-- Relationships
-- Filtering
-- Aggregation
-- DAX calculations
-- Date analysis
+`DimDate` was created specifically to support time based analysis, acting as the central calendar structure for the model. This directly supports the analytical questions defined in Section A, particularly how revenue changes over the six month period and how average order value changes over time. `DimDate` also underpins the monthly trend visuals used across all three dashboard pages.
 
-### Result
+## 8. Appropriate Data Types
 
-The modelling fields use data types appropriate to their analytical roles. It was during this validation pass that the `DimProduct` key issue described in Section 3.5 was identified.
-
-### 📸 Screenshot Evidence
+Key modelling fields were validated and assigned appropriate types: `Invoice`, `StockCode`, `CustomerID`, `Description`, and `Country` as Text; `Quantity` as Whole Number; `Price` as Decimal Number; `InvoiceDate` and the `DimDate` key as Date and Time. Correct data types are required for relationships, filtering, aggregation, and DAX calculation to behave predictably.
 
 ![Model Data Types](screenshots/03_model/06_model_data_types.png)
 
@@ -1204,364 +524,502 @@ The modelling fields use data types appropriate to their analytical roles. It wa
 
 ![Model Data Types 5](screenshots/03_model/06_model_data_types_5.png)
 
----
+*Figure 20: Model schema validated across all tables. This validation pass is where the DimProduct key issue described above was identified.*
 
-# 3.10 Table and Field Naming
+## 9. Clear Table and Field Naming
 
-### Requirement
+The model uses a consistent naming convention: `FactSales`, `DimCustomer`, `DimProduct`, `DimDate`, and `DimLocation`. The `Fact` prefix identifies the transactional table, while the `Dim` prefix identifies each descriptive dimension. This convention makes the role of each table immediately clear when writing DAX measures and building dashboard visuals.
 
-The model must use clear table and field names.
+## 10. Modelling Decisions and Challenges
 
-The following naming convention was adopted:
+**CustomerID.** Transactions with missing CustomerID were not removed. They were labelled Unknown during Power Query, so that customer level analysis could still distinguish identified from unidentified sales rather than losing the underlying revenue entirely.
 
-- `FactSales`
-- `DimCustomer`
-- `DimProduct`
-- `DimDate`
-- `DimLocation`
+**Product identification.** `StockCode` was used as the product key because it uniquely identifies each product, while `Description` is retained as a readable attribute. The initial `DimProduct` table required recreation after data type validation, described in full under DimProduct above.
 
-The `Fact` prefix identifies the transactional table, while the `Dim` prefix identifies descriptive dimensions.
+**Date analysis.** A dedicated `DimDate` table was required because the project includes monthly and time based analysis that a raw timestamp field alone cannot support efficiently.
 
-### Reason
+**Filter direction.** Single direction filtering was selected across all relationships to avoid ambiguity and unnecessary bidirectional paths, consistent with standard Star Schema design.
 
-This naming convention makes the model easier to understand and maintain.
+## Model Structure
 
-It also makes the role of each table immediately clear when writing DAX measures and building reports.
 
----
+![Completed Star Schema Alternate View](screenshots/03_model/07_completed_star_schema_2.png)
 
-# 3.11 Relationships
+*Figure 21: The completed Star Schema, including the corrected DimProduct table.*
 
-### Requirement
+The resulting model provides a structured foundation for the DAX calculations, dashboard visuals, and business insights developed in the remaining sections.
 
-The assignment requires appropriate table relationships and correct relationship cardinality.
+## *Transition to DAX*
 
-The following relationships were established:
-
-### DimCustomer → FactSales
-
-**Cardinality:** One-to-Many
-
-`DimCustomer` contains one record per customer, while a customer can have many transaction records in `FactSales`.
-
-Therefore:
-
-**DimCustomer (1) → FactSales (\*)**
+With the analytical model established, the next stage is to develop DAX measures using the relationships and filter context provided by the Star Schema. These measures feed the KPI cards, trend charts, ranking visuals, and diagnostic tables used across the three dashboard pages.
 
 ---
 
-### DimProduct → FactSales
+# SECTION D: DAX AND BUSINESS CALCULATIONS
 
-**Cardinality:** One-to-Many
+DAX measures were developed on top of the analytical data model to convert the cleaned transaction data into meaningful business indicators. A total of **16 measures** were created in a dedicated `_Measures` table, covering core KPIs, calculated business measures, and advanced analytical calculations. Twelve measures were developed to support the Executive Overview and Detailed Analysis pages; four further measures were added afterward to support cancellation analysis on the Diagnostic Insights page.
 
-`DimProduct` contains one record per product, while a product can appear in many transaction lines.
+![All Measures](screenshots/04_dax/13_all_12_measures.png)
 
-Therefore:
+*Figure 22: Measures confirmed in the Measures table. This screenshot predates the four cancellation measures added afterward; a refreshed capture is recommended before final submission.*
 
-**DimProduct (1) → FactSales (\*)**
+## Level 1: Core Measures
 
----
+**Total Sales**
 
-### DimDate → FactSales
-
-**Cardinality:** One-to-Many
-
-`DimDate` contains one record per date, while many transactions can occur on the same date.
-
-Therefore:
-
-**DimDate (1) → FactSales (\*)**
-
----
-
-### DimLocation → FactSales
-
-**Cardinality:** One-to-Many
-
-`DimLocation` contains one record per location/country, while many transaction records can belong to the same country.
-
-Therefore:
-
-**DimLocation (1) → FactSales (\*)**
-
----
-
-# 3.12 Cross-Filter Direction
-
-### Requirement
-
-The assignment requires appropriate cross-filter direction and specifically warns against inappropriate bidirectional relationships.
-
-The model uses **single-direction filtering** from the dimension tables toward `FactSales`.
-
-The intended filtering pattern is:
-
-**Dimension → FactSales**
-
-For example:
-
-**DimProduct → FactSales**
-
-A product selected in a report therefore filters the relevant transaction records.
-
-The same principle applies to:
-
-- `DimCustomer`
-- `DimDate`
-- `DimLocation`
-
-### Reason
-
-Single-direction filtering reduces the possibility of:
-
-- Ambiguous filter paths
-- Circular filtering
-- Unexpected aggregation behaviour
-- Unnecessary bidirectional relationships
-
-No unnecessary bidirectional relationships were introduced.
-
----
-
-# 3.13 Avoiding Many-to-Many Relationships
-
-The model was designed to avoid unnecessary many-to-many relationships.
-
-Each dimension provides unique key values, while the fact table contains multiple transaction records associated with those keys.
-
-Therefore, the model follows the standard Star Schema pattern:
-
-**One dimension record → Many fact records**
-
-This produces clean one-to-many relationships and avoids unnecessary many-to-many joins.
-
----
-
-# 3.14 Dedicated Date Table Usage
-
-`DimDate` was created specifically to support time-based analysis.
-
-The Date dimension acts as the central calendar structure for the model.
-
-This supports the analytical questions defined in Section A, particularly:
-
-- How does revenue change over the six-month period?
-- How does average order value change over time?
-- What are the monthly sales trends?
-
-The Date dimension will also support DAX measures used in the dashboard stage.
-
----
-
-# 3.15 Final Star Schema
-
-The completed model follows the structure:
-
-```text
-                    DimDate
-                       |
-                       |
-DimCustomer ---- FactSales ---- DimProduct
-                       |
-                       |
-                  DimLocation
+```DAX
+Total Sales =
+SUMX(
+    FactSales,
+    FactSales[Quantity] * FactSales[Price]
+)
 ```
 
-`FactSales` is positioned at the centre because it contains the transaction-level business events.
+Calculates total sales value by multiplying quantity by unit price for each transaction line and summing the result across the current filter context.
 
-The surrounding dimension tables provide descriptive context for analysing those transactions.
+**Total Transactions**
 
-### 📸 Final Model Evidence
+```DAX
+Total Transactions =
+DISTINCTCOUNT(FactSales[Invoice])
+```
 
-![Completed Star Schema 2](screenshots/03_model/07_completed_star_schema_2.png)
+Counts the number of distinct invoices in the current filter context, providing the primary measure of transaction volume.
 
-The final Model View screenshot provides evidence that the required Star Schema was implemented in Power BI, including the corrected `DimProduct` table.
+**Total Quantity Sold**
 
----
+```DAX
+Total Quantity Sold =
+SUM(FactSales[Quantity])
+```
 
-# 3.16 Why This Model Was Selected
+Sums total units sold across the current filter context.
 
-A Star Schema was selected because the Online Retail II dataset is fundamentally a transaction-based dataset.
+**Unique Products**
 
-`FactSales` contains the measurable business events, while the dimensions describe the context in which those events occurred.
+```DAX
+Unique Products =
+DISTINCTCOUNT(FactSales[StockCode])
+```
 
-This structure provides several advantages:
+Counts the number of distinct products represented in the current filter context.
 
-* Reduces unnecessary duplication
-* Separates transactions from descriptive attributes
-* Supports efficient filtering
-* Supports DAX calculations
-* Makes relationships easier to understand
-* Supports scalable dashboard development
-* Reduces the risk of ambiguous filter paths
+**Total Countries**
 
-The model therefore provides a more appropriate analytical structure than keeping all information in a single flat table.
+```DAX
+Total Countries =
+DISTINCTCOUNT(FactSales[Country])
+```
 
----
+Counts the number of distinct countries represented in the current filter context.
 
-# 3.17 Modelling Challenges
+**Average Unit Price**
 
-Several modelling considerations were addressed during the creation of the Star Schema.
+```DAX
+Average Unit Price =
+AVERAGE(FactSales[Price])
+```
 
-### CustomerID
+Calculates the average unit price across the current filter context.
 
-Some transactions originally had missing CustomerID values. These were handled during Power Query so that valid transactions could be retained without incorrectly removing them.
+**Total Invoices**
 
-### Product Identification
+```DAX
+Total Invoices =
+DISTINCTCOUNT(FactSales[Invoice])
+```
 
-`StockCode` was used as the product identifier because it provides the product-level key required to connect product information to transaction records. The initial `DimProduct` table required recreation after data type validation to ensure the key column held fully distinct values.
+Counts the total number of distinct invoices across all records, used as the denominator for the Cancellation Rate Percent measure below.
 
-### Date Analysis
+## Level 2: Calculated Business Measures
 
-A dedicated `DimDate` table was required because the project includes monthly and time-based analysis.
+**Average Transaction Value**
 
-### Relationship Design
+```DAX
+Average Transaction Value =
+DIVIDE([Total Sales], [Total Transactions], 0)
+```
 
-Relationships were configured as one-to-many wherever the dimension contained unique keys and the fact table contained repeated transaction references.
+Divides Total Sales by Total Transactions to give the average value generated per order.
 
-### Filter Direction
+**Unique Customers**
 
-Single-direction filtering was selected to reduce ambiguity and avoid unnecessary bidirectional relationships.
+```DAX
+Unique Customers =
+CALCULATE(
+    DISTINCTCOUNT(FactSales[CustomerID]),
+    FactSales[CustomerID] <> "Unknown"
+)
+```
 
----
+Counts distinct identified customers, explicitly excluding records labelled Unknown so that the Unknown placeholder is never counted as a customer.
 
-# 3.18 Section C Requirement Coverage
+**Sales from Identified Customers**
 
-| Requirement                                     | Implementation                                        | Evidence                 |
-| ------------------------------------------------ | ------------------------------------------------------- | --------------------------- |
-| Main fact table identified                      | `FactSales`                                           | FactSales screenshot     |
-| Dimension tables created                        | `DimCustomer`, `DimProduct`, `DimDate`, `DimLocation` | Dimension screenshots    |
-| Primary/key fields                              | Dimension keys established                            | Model/data-type evidence |
-| Appropriate relationships                       | Dimensions connected to FactSales                     | Final Model View         |
-| Correct cardinality                             | One-to-many relationships                             | Final Model View         |
-| Appropriate cross-filter direction              | Single direction                                      | Final Model View         |
-| Dedicated Date Table                            | `DimDate`                                             | DimDate screenshot       |
-| Correct Date Table usage                        | Used for time analysis                                | Final model              |
-| Appropriate data types                          | Fields validated and typed                            | Data type screenshots    |
-| Clear naming                                    | Fact/Dim naming convention                            | Model View               |
-| Avoid unnecessary many-to-many                  | One-to-many Star Schema                               | Final Model View         |
-| Avoid ambiguous paths                           | Single-direction dimension-to-fact filtering          | Final Model View         |
-| Avoid inappropriate bidirectional relationships | Single-direction relationships                        | Final Model View         |
-| Data quality correction                         | `DimProduct` recreated after validation               | Recreated screenshot     |
+```DAX
+Sales from Identified Customers =
+CALCULATE(
+    [Total Sales],
+    FactSales[CustomerID] <> "Unknown"
+)
+```
 
----
+Restricts Total Sales to transactions where a customer identifier is known.
 
-# 3.19 Section C Evidence
+**Sales from Unknown Customers**
 
-The modelling evidence is consolidated through the screenshots captured during the modelling process:
+```DAX
+Sales from Unknown Customers =
+CALCULATE(
+    [Total Sales],
+    FactSales[CustomerID] = "Unknown"
+)
+```
 
-* Cleaned dataset loaded
-* FactSales created
-* DimCustomer created
-* DimProduct created
-* DimLocation created
-* DimDate created
-* Data types validated
-* DimProduct recreated
-* Completed Star Schema
+Restricts Total Sales to transactions where the customer identifier is missing.
 
-The final Model View screenshots provide the overall evidence that the tables, keys and relationships were implemented in Power BI.
+**Cancelled Invoices**
 
+```DAX
+Cancelled Invoices =
+CALCULATE(
+    DISTINCTCOUNT(FactSales[Invoice]),
+    LEFT(FactSales[Invoice], 1) = "C"
+)
+```
 
+Counts distinct invoices beginning with the letter C, identifying confirmed cancellation invoices.
 
-# 3.20 Section C Completion Status
+**Cancellation Rate Percent**
 
-**Section C — Data Modelling: COMPLETED**
+```DAX
+Cancellation Rate Percent =
+DIVIDE([Cancelled Invoices], [Total Invoices], 0)
+```
 
-The cleaned transaction dataset has been transformed into a structured Star Schema consisting of:
+Calculates the proportion of all invoices that were cancelled.
 
-**FactSales**
+**Total Cancelled Sales**
 
-with the supporting dimensions:
+```DAX
+Total Cancelled Sales =
+ABS(
+    CALCULATE(
+        [Total Sales],
+        LEFT(FactSales[Invoice], 1) = "C"
+    )
+)
+```
 
-**DimCustomer · DimProduct · DimDate · DimLocation**
+Calculates the absolute sales value associated with cancelled invoices, since cancellation line items carry negative quantity and would otherwise return a negative sales figure.
 
-The model is now ready for the next stage:
+## Level 3: Advanced DAX
 
-# SECTION D — DAX & Business Calculations
+**Sales Percent of Selected Total**
 
-## Overview
+```DAX
+Sales Percent of Selected Total =
+DIVIDE(
+    [Total Sales],
+    CALCULATE([Total Sales], ALLSELECTED(FactSales)),
+    0
+)
+```
 
-12 DAX measures were developed in the `_Measures` table to support the Executive Overview, Detailed Analysis, and Diagnostic Insights dashboard pages. All 12 are confirmed in the measure list screenshot below; 6 were selected as principal measures for detailed documentation, as required by the assignment.
+Calculates the proportion of sales represented by the current selection relative to the selected overall total, demonstrating filter context manipulation with ALLSELECTED.
 
-### 📸 Main Evidence — All 12 Measures
+**Product Sales Rank**
 
-![All 12 DAX Measures](screenshots/04_dax/13_all_12_measures.png)
+```DAX
+Product Sales Rank =
+RANKX(
+    ALL(FactSales[StockCode]),
+    [Total Sales],
+    ,
+    DESC,
+    DENSE
+)
+```
 
-This screenshot confirms all 12 measures exist in the `_Measures` table, satisfying the minimum requirement for meaningful DAX measures.
+Ranks each product by total sales, with rank 1 assigned to the highest selling product. ALL removes the individual product filter so that every product's rank reflects its position across the full product set within whatever date, country, and customer filters are already active.
 
----
+## Summary of DAX Measures
 
-## 1. All 12 Measures — What Was Done
+| # | Measure | Level | Main Purpose |
+|---|---|---|---|
+| 1 | `Total Sales` | Level 1 | Total sales value |
+| 2 | `Total Transactions` | Level 1 | Distinct invoice count |
+| 3 | `Total Quantity Sold` | Level 1 | Total units sold |
+| 4 | `Unique Products` | Level 1 | Distinct product count |
+| 5 | `Total Countries` | Level 1 | Distinct country count |
+| 6 | `Average Unit Price` | Level 1 | Average price per unit |
+| 7 | `Total Invoices` | Level 1 | Distinct invoice count, all records |
+| 8 | `Average Transaction Value` | Level 2 | Average sales value per transaction |
+| 9 | `Unique Customers` | Level 2 | Distinct identified customers |
+| 10 | `Sales from Identified Customers` | Level 2 | Sales tied to known customer IDs |
+| 11 | `Sales from Unknown Customers` | Level 2 | Sales tied to missing customer IDs |
+| 12 | `Cancelled Invoices` | Level 2 | Distinct cancellation invoice count |
+| 13 | `Cancellation Rate Percent` | Level 2 | Proportion of invoices cancelled |
+| 14 | `Total Cancelled Sales` | Level 2 | Absolute value of cancelled sales |
+| 15 | `Sales Percent of Selected Total` | Level 3 | Share of sales within current selection |
+| 16 | `Product Sales Rank` | Level 3 | Ranks products by total sales |
 
-| # | Measure | Purpose | Key DAX Function(s) | Evidence |
-|---|---|---|---|---|
-| 1 | **Total Sales** | Total sales value (Quantity × Price) | `SUMX()` | ![](screenshots/04_dax/01_total_sales_dax.png) |
-| 2 | **Total Transactions** | Counts transaction rows | `COUNTROWS()` | ![](screenshots/04_dax/02_total_transactions_dax.png) |
-| 3 | **Total Quantity Sold** | Total units sold | `SUM()` | ![](screenshots/04_dax/03_total_quantity_dax.png) |
-| 4 ⭐ | **Average Transaction Value** | Average value per transaction | `DIVIDE()` | ![](screenshots/04_dax/04_average_transaction_value_dax.png) |
-| 5 ⭐ | **Unique Customers** | Distinct identified customers (excludes "Unknown") | `CALCULATE()`, `DISTINCTCOUNT()` | ![](screenshots/04_dax/05_unique_customers_dax.png) |
-| 6 | **Unique Products** | Distinct product count | `DISTINCTCOUNT()` | ![](screenshots/04_dax/06_unique_products_dax.png) |
-| 7 | **Total Countries** | Geographic coverage count | `DISTINCTCOUNT()` | ![](screenshots/04_dax/07_total_countries_dax.png) |
-| 8 | **Average Unit Price** | Average price across selected context | `AVERAGE()` | ![](screenshots/04_dax/08_average_unit_price_dax.png) |
-| 9 ⭐ | **Sales from Identified Customers** | Sales tied to known customer IDs | `CALCULATE()` | ![](screenshots/04_dax/09_identified_customer_sales_dax.png) |
-| 10 | **Sales from Unknown Customers** | Sales tied to missing/"Unknown" IDs | `CALCULATE()` | ![](screenshots/04_dax/10_unknown_customer_sales_dax.png) |
-| 11 | **Sales % of Selected Total** | Share of sales within current filter selection | `DIVIDE()`, `CALCULATE()`, `ALLSELECTED()` | ![](screenshots/04_dax/11_sales_selected_percentage_dax.png) |
-| 12 ⭐ | **Product Sales Rank** | Ranks products by sales, rank 1 = top seller | `RANKX()`, `ALL()` | ![](screenshots/04_dax/12_product_sales_rank_dax.png) |
+The 16 measures exceed the required minimum of 12 and progress from fundamental aggregations to filter context manipulation and ranking.
 
-⭐ = one of the 6 principal measures documented in detail below.
+## Documentation of the Six Most Important DAX Measures
 
----
+The following six measures were selected as the most important because together they provide the core performance, transaction, customer, and ranking indicators used throughout the dashboard, while covering the widest range of DAX function categories: iteration with SUMX, counting with DISTINCTCOUNT, safe division with DIVIDE, context filtering with CALCULATE, and advanced ranking with RANKX and ALL.
 
-## 2. Six Principal Measures — Selected for Detailed Documentation
+### Total Sales
 
-| Measure | Reason for Selection | Filter Context Behaviour |
-|---|---|---|
-| **Total Sales** | Primary business performance KPI | Responds to date, country, product filters |
-| **Total Transactions** | Measures transaction activity | Responds to all report filters |
-| **Average Transaction Value** | Transaction-level performance context | Both numerator and denominator respond to filters |
-| **Unique Customers** | Measures identifiable customer reach | Excludes `"Unknown"` regardless of filter |
-| **Sales from Identified Customers** | Compares known vs. unknown customer sales | Applies ID condition within active filters |
-| **Product Sales Rank** | Demonstrates advanced ranking/context manipulation | `ALL()` removes product filter for cross-product ranking |
+**What it calculates:** total sales value using Quantity multiplied by Price for each transaction line, summed across the current filter context.
 
-### 📸 Principal Measure Evidence
+**Why it is useful:** it is the primary indicator of business performance and the foundation from which the majority of other measures are derived.
 
-**1. Total Sales**
-![Total Sales](screenshots/04_dax/01_total_sales_dax.png)
+**Main DAX function:** SUMX.
 
-**2. Total Transactions**
-![Total Transactions](screenshots/04_dax/02_total_transactions_dax.png)
+**Filter context:** the result changes when the report is filtered by date, country, or product.
 
-**3. Average Transaction Value**
-![Average Transaction Value](screenshots/04_dax/04_average_transaction_value_dax.png)
+**Dashboard use:** used as the primary KPI card on all three pages and as the value field for the trend and product ranking visuals.
 
-**4. Unique Customers**
-![Unique Customers](screenshots/04_dax/05_unique_customers_dax.png)
+![Total Sales Measure](screenshots/04_dax/01_total_sales_dax.png)
 
-**5. Sales from Identified Customers**
-![Sales from Identified Customers](screenshots/04_dax/09_identified_customer_sales_dax.png)
+*Figure 23: Total Sales measure defined using SUMX.*
 
-**6. Product Sales Rank**
-![Product Sales Rank](screenshots/04_dax/12_product_sales_rank_dax.png)
+### Total Transactions
 
----
+**What it calculates:** the count of distinct invoices in the current filter context.
 
-## 3. Evidence Folder
+**Why it is useful:** it measures transaction activity and allows revenue to be interpreted alongside transaction volume rather than in isolation.
+
+**Main DAX function:** DISTINCTCOUNT.
+
+**Filter context:** changes with date, country, and product filters.
+
+**Dashboard use:** used as an Executive Overview KPI.
+
+![Total Transactions Measure](screenshots/04_dax/02_total_transactions_dax.png)
+
+*Figure 24: Total Transactions measure defined using DISTINCTCOUNT.*
+
+### Average Transaction Value
+
+**What it calculates:** Total Sales divided by Total Transactions.
+
+**Why it is useful:** it indicates the average value generated per order and complements the raw sales and transaction counts.
+
+**Main DAX function:** DIVIDE.
+
+**Filter context:** both the numerator and denominator respond to filters, so the average recalculates for any selection.
+
+**Dashboard use:** used as an Executive Overview KPI.
+
+![Average Transaction Value Measure](screenshots/04_dax/04_average_transaction_value_dax.png)
+
+*Figure 25: Average Transaction Value measure defined using DIVIDE.*
+
+### Unique Customers
+
+**What it calculates:** the count of distinct customer identifiers, excluding records labelled Unknown.
+
+**Why it is useful:** it provides a meaningful measure of the identifiable customer base rather than counting the Unknown placeholder as a customer.
+
+**Main DAX functions:** CALCULATE and DISTINCTCOUNT.
+
+**Filter context:** responds to report filters while consistently excluding Unknown regardless of selection.
+
+**Dashboard use:** used as an Executive Overview KPI and referenced in customer analysis on the Detailed Analysis page.
+
+![Unique Customers Measure](screenshots/04_dax/05_unique_customers_dax.png)
+
+*Figure 26: Unique Customers measure defined using CALCULATE and DISTINCTCOUNT.*
+
+### Sales from Identified Customers
+
+**What it calculates:** total sales restricted to transactions where a customer identifier is known.
+
+**Why it is useful:** it allows direct comparison between sales tied to identified customers and sales where customer information is missing, a data quality issue documented during Power Query.
+
+**Main DAX function:** CALCULATE.
+
+**Filter context:** the identification condition is applied within whatever filter context is already active from the report.
+
+**Dashboard use:** used in the Identified versus Unknown Customer Sales chart on the Detailed Analysis page and as a KPI on the Diagnostic Insights page.
+
+![Sales from Identified Customers Measure](screenshots/04_dax/09_identified_customer_sales_dax.png)
+
+*Figure 27: Sales from Identified Customers measure defined using CALCULATE.*
+
+### Product Sales Rank
+
+**What it calculates:** ranks each product by total sales, with rank 1 assigned to the highest selling product.
+
+**Why it is useful:** it identifies the strongest and weakest performing products and supports the Product Performance matrix.
+
+**Main DAX functions:** RANKX and ALL.
+
+**Filter context:** ALL removes the individual product filter so that each product's rank reflects its position across the full product set within the active date, country, and customer filters, rather than only the currently visible rows.
+
+**Dashboard use:** used in the Product Performance matrix on the Detailed Analysis page and the Diagnostic Product Performance matrix on the Diagnostic Insights page.
+
+![Product Sales Rank Measure](screenshots/04_dax/12_product_sales_rank_dax.png)
+
+*Figure 28: Product Sales Rank measure defined using RANKX and ALL.*
+
+## DAX and Filter Context
+
+The measures were designed to work with the Star Schema established in Section C. Dimension selections filter `FactSales` through the one to many relationships, allowing the same DAX measure to return different results depending on the user's selections.
 
 ```text
-04_dax/
-├── 01_total_sales_dax.png
-├── 02_total_transactions_dax.png
-├── 03_total_quantity_dax.png
-├── 04_average_transaction_value_dax.png
-├── 05_unique_customers_dax.png
-├── 06_unique_products_dax.png
-├── 07_total_countries_dax.png
-├── 08_average_unit_price_dax.png
-├── 09_identified_customer_sales_dax.png
-├── 10_unknown_customer_sales_dax.png
-├── 11_sales_selected_percentage_dax.png
-├── 12_product_sales_rank_dax.png
-├── 13_all_12_measures.png
-└── README.md
+DimLocation
+   |
+FactSales
+   |
+DAX Measure
 ```
+
+A measure such as Total Sales therefore does not return a single fixed number. Its result changes according to the active filter context created by slicers, chart axes, and page filters. The use of CALCULATE, ALL, ALLSELECTED, and RANKX across the sixteen measures demonstrates filter context manipulation appropriate to the analytical model.
+
+## *Transition to Data Visualization*
+
+The DAX stage produced sixteen measures covering sales performance, transaction activity, customer identification, and cancellation behaviour. These measures now provide the foundation for the interactive Power BI dashboard developed in Section E.
+
+## Section E: Professional Power BI Dashboards
+
+Three report pages were developed to move the user through the analytical arc required by the assignment: what happened, where it happened, and why it happened together with what requires attention. Each page carries its own subtitle, phrased as the analytical question it answers. A cover page introduces the dataset and lists the three pages before the report content begins.
+
+![Cover Page](screenshots/05_dashboard_overview/Cover_Page.png)
+
+### Page 1: Executive Overview
+
+Subtitle: How did sales perform over the six month period.
+
+This page gives management an immediate view of overall performance. Four KPI cards report Total Sales, Total Transactions, Unique Customers, and Average Transaction Value. A Monthly Sales Trend line chart shows revenue across the six month window, rising sharply in March before settling into a more stable pattern through April to June. A Top 10 Products by Sales Volume bar chart identifies the highest revenue products, led by the white hanging heart tea light holder and the regency cakestand. A Geographic Sales Distribution chart shows that the United Kingdom accounts for the large majority of sales, followed by the Netherlands, EIRE, Germany, and France, with the remaining countries each contributing a comparatively small share.
+
+Slicers for YearMonth, Country, and Product allow the page to be filtered interactively.
+
+![Executive Overview](screenshots/05_dashboard_overview/01_executive_overview.png)
+
+### Page 2: Detailed Product and Customer Analysis
+
+Subtitle: Which products and customers drive the most revenue.
+
+This page moves from the overall summary into product and customer level detail. Three KPI cards report Total Quantity Sold, Unique Products, and Total Countries. An Identified versus Unknown Customer Sales pie chart shows that 86.65 percent of sales are tied to identified customers, while 13.35 percent are associated with the Unknown customer segment created during Power Query cleaning. A Top 10 Products by Quantity Sold bar chart provides a volume based ranking that differs from the revenue based ranking on Page 1, distinguishing high volume low price products from high value low volume products. A customer ranking chart identifies the leading contributors, including the Unknown segment alongside identified customer identifiers. A Product Performance matrix lists StockCode, Total Sales, Total Transactions, Total Quantity Sold, and Product Sales Rank for the full product set, sorted by rank.
+
+![Detailed Analysis](screenshots/05_dashboard_overview/01_detailed_analysis..png)
+
+### Page 3: Diagnostic Insights
+
+Subtitle: Why it happened, what needs attention.
+
+This page investigates the factors behind overall performance rather than simply repeating what happened. Four KPI cards report Sales from Identified Customers, Sales from Unknown Customers, Sales Percent of Selected Total, and Cancellation Rate Percent, with the cancellation rate calculated as the proportion of invoices beginning with the letter C. A Cancelled Sales Trend line chart tracks the value of cancelled transactions across the six month period, following a pattern that rises sharply in March before declining and then rising again toward June. A Diagnostic Product Performance matrix extends the Detailed Analysis matrix with Average Transaction Value and Sales Percent of Selected Total for each product. A Geographic Sales Distribution map presents the same country level sales data as a bubble map rather than a bar chart, giving a spatial view of where sales activity concentrates.
+
+![Diagnostic Insights](screenshots/05_dashboard_overview/01_diagnostic_insights.png)
+---
+
+## Business Insights
+
+**Insight 1: Missing customer identification represents a measurable share of revenue.**
+
+The Identified versus Unknown Customer Sales chart on Page 2 shows that 13.35 percent of sales value, approximately £0.51 million of the £3.82 million total, is tied to transactions with no customer identifier. Because the `Unique Customers` measure excludes the Unknown segment by design, any customer level analysis, repeat purchase behaviour, customer ranking, targeted marketing, can only be performed reliably on the remaining 86.65 percent. This traces directly to Power Query Transformation 3, where missing CustomerID values were labelled Unknown rather than deleted, so the gap could be measured rather than hidden.
+
+*Recommendation:* Check whether missing CustomerID values cluster around a specific checkout flow or guest checkout option. If so, capturing an identifier at that point could recover a meaningful share of the £0.51 million currently outside customer level analysis.
+
+**Insight 2: Cancellation activity affects a material proportion of invoices.**
+
+The `Cancellation Rate Percent` KPI on Page 3 reports 18.71 percent, roughly one in five invoices, based on the 4,394 validated cancellation invoices from Power Query Transformation 6. The Cancelled Sales Trend chart shows this is not constant: cancellation value rises sharply in March, the same period gross sales peak on Page 1, suggesting cancellation volume scales with order volume rather than holding a flat background rate.
+
+*Recommendation:* Segment `Cancellation Rate Percent` by product and country using the existing slicers to check whether cancellations concentrate in specific items or markets, which would point to a targeted fulfilment issue rather than a general pattern.
+
+**Insight 3: Revenue is heavily concentrated in a small number of products and one country.**
+
+The Top 10 Products charts on Pages 1 and 2 show the white hanging heart tea light holder and regency cakestand leading under both revenue and quantity rankings, confirming genuine top performance rather than a high price on a low volume item. Geographically, the United Kingdom dominates by a wide margin over the other 31 countries combined, indicating the business operates largely as a UK domestic retailer with a long tail of minor international activity.
+
+- *Recommendation:* Prioritize stock availability for the top 10 products, since disruption to any one carries outsized revenue impact. Separately, review `Average Transaction Value by Country` for smaller markets with above-average order value despite low volume, which would flag an under-served market worth deliberate expansion.
+---
+
+## Repository Structure
+
+```text
+DSA3050-PowerBI-Snit-Teshome-670552/
+
+README.md
+
+data/
+    online_retail_ii_6month.xlsx
+
+powerbi/
+    DSA3050_SnitTeshome.pbix
+
+screenshots/
+    01_raw_data/
+        01_loading_preview.png
+        02_power_query_raw_state.png
+        03_data_quality_baseline_1.png
+        03_data_quality_baseline_2.png
+        04_date_range.png
+
+    02_power_query/
+        01_test_records_before.png
+        02_test_records_removed.png
+        03_missing_customerid_investigation.png
+        04_missing_customerid_before.png
+        05_missing_customerid_handled_Query.png
+        06_missing_customerid_handled.png
+        07_zero_price_removed.png
+        08_zero_price_investigation.png
+        09_negative_quantity_investigation.png
+        10_negative_quantity_summary.png
+        11_cancellation_invoice_investigation.png
+        12_datatype_investigation.png
+        13_cancellation_summary.png
+        14_cancellation_validation.png
+        15_cancellation_final_results.png
+        16_negative_price_investigation.png
+        17_removed_negative_price.png
+        18_duplicate_investigation.png
+        19_removed_duplicates.png
+        20_power_query_final_cleaning_validation.png
+
+    03_model/
+        01_cleaned_dataset_loaded.png
+        02_fact_sales_named.png
+        03_dim_customer_created.png
+        04_dim_product_created.png
+        04_dim_product_created_Recreated.png
+        05_dim_Date_created.png
+        05_dim_location_created.png
+        06_model_data_types.png
+        06_model_data_types_1.png
+        06_model_data_types_2.png
+        06_model_data_types_3.png
+        06_model_data_types_4.png
+        06_model_data_types_5.png
+        07_completed_star_schema.png
+        07_completed_star_schema_2.png
+
+    04_dax/
+        01_total_sales_dax.png
+        02_total_transactions_dax.png
+        03_total_quantity_dax.png
+        04_average_transaction_value_dax.png
+        05_unique_customers_dax.png
+        06_unique_products_dax.png
+        07_total_countries_dax.png
+        08_average_unit_price_dax.png
+        09_identified_customer_sales_dax.png
+        10_unknown_customer_sales_dax.png
+        11_sales_selected_percentage_dax.png
+        12_product_sales_rank_dax.png
+        13_all_12_measures.png
+
+    05_dashboard_overview/
+        01_detailed_analysis..png
+        01_diagnostic_insights.png
+        01_executive_overview.png
+        Cover_Page.png
+```
+
+## Data Source Citation
+
+Chen, D. (2019). Online Retail II. UCI Machine Learning Repository. Available at: https://archive.ics.uci.edu/dataset/502/online%2Bretail%2Bii
