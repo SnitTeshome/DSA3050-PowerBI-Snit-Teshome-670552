@@ -962,6 +962,36 @@ The `Cancellation Rate Percent` KPI on Page 3 reports 18.71 percent, roughly one
 The Top 10 Products charts on Pages 1 and 2 show the white hanging heart tea light holder holding the top position under both the revenue ranking on Page 1 and the quantity ranking on Page 2, confirming it as a genuine top performer on both dimensions. Below that top position the two rankings diverge: the regency cakestand 3 tier is the second highest by revenue but only the sixth highest by quantity, indicating it earns more from a higher price point on comparatively fewer units, while the jumbo bag red retrospot ranks second by quantity but lower by revenue. Geographically, the United Kingdom dominates at 301,605 against a combined total of roughly 33,000 across the other 31 countries, indicating the business operates largely as a UK domestic retailer with a long tail of minor international activity.
 
 - *Recommendation:* Prioritize stock availability for the white hanging heart tea light holder specifically, given its consistent top position on both metrics. Separately, review `Average Transaction Value by Country` for smaller markets with above-average order value despite low volume, which would flag an under-served market worth deliberate expansion.
+
+## Visual Selection
+
+- KPI cards for headline measures: Total Sales, Total Transactions, Unique Customers, Average Transaction Value on Page 1; Sales from Identified/Unknown Customers and Cancellation Rate Percent on Page 3
+- Monthly Sales Trend and Cancelled Sales Trend line charts for time based patterns
+- Top 10 Products by Sales Volume, Top 10 Products by Quantity Sold, and Customers by Sales bar charts for category ranking
+- Identified versus Unknown Customer Sales pie chart for a single proportional split
+- Product Performance and Diagnostic Product Performance matrices for multi measure product detail
+- Geographic Sales Distribution, a bar chart on Page 1 and a bubble map on Page 3, for spatial comparison
+
+## Layout
+
+- Page title and subtitle at the top
+- YearMonth, Country, and Product slicers directly beneath the title
+- KPI cards below the slicers
+- Analytical visuals arranged in the remaining space, consistent across all three pages
+
+## Interactivity
+
+- Same three slicers, YearMonth, Country, and Product, on every page
+- Clicking a bar on the Geographic Sales Distribution or product charts cross filters the KPI cards and other visuals on that page
+- Page navigator in the top right of every page: Executive overview, Detailed analysis, Diagnostic insights
+- Monthly Sales Trend and Cancelled Sales Trend support drill down from Year to Month
+
+## Storytelling
+
+- Page 1 subtitle: "How did sales perform over the six month period"
+- Page 2 subtitle: "Which products and customers drive the most revenue"
+- Page 3 subtitle: "Why it happened, what needs attention"
+- Diagnostic Insights closes the story with two unresolved issues from Power Query: 13.35 percent of sales tied to the Unknown customer segment, and an 18.71 percent cancellation rate that does not move in step with gross sales every month
 ---
 
 ## Repository Structure
