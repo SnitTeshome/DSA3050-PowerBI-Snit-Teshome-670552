@@ -141,8 +141,6 @@ The Power BI solution aims to answer the following questions:
 ## *Transition to Data Preparation*
 
 Having established the dataset, its characteristics, and the key analytical questions, the next stage is to begin the Business Intelligence development process. The raw dataset was loaded into Microsoft Power BI Desktop, where its structure and data quality were examined before applying the cleaning and transformation steps documented in Section B.
-
-
 ## Initial Data Quality Observations
 
 Before applying any transformations, the dataset was profiled in Power Query using Column Quality, Column Distribution, and Column Profile, evaluated against the *entire dataset* rather than only the default preview rows.
@@ -171,9 +169,11 @@ Before applying any transformations, the dataset was profiled in Power Query usi
 
 **7.Test Product Record.** A record with StockCode equal to `TEST001` and description *"This is a test product"* was identified, requiring investigation to confirm whether it represents genuine business activity.
 
+
 # SECTION B: POWER QUERY, DATA CLEANING AND TRANSFORMATION
 
-Power Query was used to transform the raw six month dataset into a form suitable for modelling and analysis. Nine significant transformations were applied, each based on a data quality issue identified during the initial profiling in Section A rather than performed to inflate the number of steps.
+
+Power Query was used to transform the raw six month dataset into a form suitable for modelling and analysis. `Nine significant transformations`were applied, each based on a data quality issue identified during the initial profiling in Section A rather than performed to inflate the number of steps.
 
 ## 1. Correcting Data Types
 
@@ -886,7 +886,7 @@ The DAX stage produced sixteen measures covering sales performance, transaction 
 
 ## Section E: Professional Power BI Dashboards
 
-Three report pages were developed to move the user through the analytical arc required by the assignment: what happened, where it happened, and why it happened together with what requires attention. Each page carries its own subtitle, phrased as the analytical question it answers. A cover page introduces the dataset and lists the three pages before the report content begins.
+Three report pages move the user through the analytical arc: what happened, where it happened, and why it happened together with what requires attention.
 
 ![Cover Page](screenshots/05_dashboard_overview/Cover_Page.png)
 
@@ -894,9 +894,14 @@ Three report pages were developed to move the user through the analytical arc re
 
 Subtitle: How did sales perform over the six month period.
 
-This page gives management an immediate view of overall performance. Four KPI cards report Total Sales, Total Transactions, Unique Customers, and Average Transaction Value. A Monthly Sales Trend line chart shows revenue across the six month window, rising sharply in March before settling into a more stable pattern through April to June. A Top 10 Products by Sales Volume bar chart identifies the highest revenue products, led by the white hanging heart tea light holder and the regency cakestand. A Geographic Sales Distribution chart shows that the United Kingdom accounts for the large majority of sales, followed by the Netherlands, EIRE, Germany, and France, with the remaining countries each contributing a comparatively small share.
-
-Slicers for YearMonth, Country, and Product allow the page to be filtered interactively.
+- **Total Sales:** £3.82M
+- **Total Transactions:** 205K
+- **Unique Customers:** 3K
+- **Average Transaction Value:** £18.59
+- **Monthly Sales Trend:** opens at approximately £620K in January, drops to a low of approximately £510K in February, spikes sharply to a peak of approximately £760K in March, falls back to approximately £650K in April, dips further to approximately £610K in May, and recovers to approximately £640K in June.
+- **Top 10 Products by Sales Volume:** led by the white hanging heart tea light holder, followed by the regency cakestand 3 tier, dotcom postage, jumbo bag red retrospot, and party bunting, with door mat union flag, red retrospot cake stand, assorted colour bird ornament, and door mat red spot completing the ranking.
+- **Geographic Sales Distribution:** United Kingdom leads at 301,605, followed by Netherlands (12,316), EIRE (8,670), Germany (3,099), France (2,750), Spain (1,174), Cyprus (989), Channel Islands (559), Switzerland (526), and Greece (296), with the remaining 22 countries each contributing fewer than 300.
+- Slicers for YearMonth, Country, and Product allow the page to be filtered interactively.
 
 ![Executive Overview](screenshots/05_dashboard_overview/01_executive_overview.png)
 
@@ -904,7 +909,18 @@ Slicers for YearMonth, Country, and Product allow the page to be filtered intera
 
 Subtitle: Which products and customers drive the most revenue.
 
-This page moves from the overall summary into product and customer level detail. Three KPI cards report Total Quantity Sold, Unique Products, and Total Countries. An Identified versus Unknown Customer Sales pie chart shows that 86.65 percent of sales are tied to identified customers, while 13.35 percent are associated with the Unknown customer segment created during Power Query cleaning. A Top 10 Products by Quantity Sold bar chart provides a volume based ranking that differs from the revenue based ranking on Page 1, distinguishing high volume low price products from high value low volume products. A customer ranking chart identifies the leading contributors, including the Unknown segment alongside identified customer identifiers. A Product Performance matrix lists StockCode, Total Sales, Total Transactions, Total Quantity Sold, and Product Sales Rank for the full product set, sorted by rank.
+- **Total Quantity Sold:** 2M
+- **Unique Products:** 4K
+- **Total Countries:** 32
+- **Identified versus Unknown Customer Sales:** £3.31M (86.65 percent) from identified customers versus £0.51M (13.35 percent) from the Unknown segment.
+- **Top 10 Products by Quantity Sold:** led by the white hanging heart tea light holder, followed by jumbo bag red retrospot, assorted colour bird ornament, party bunting, door mat union flag, regency cakestand 3 tier, door mat red spot, vintage union jack bunting, red retrospot cake stand, and dotcom postage, a different order to the revenue based ranking on Page 1.
+- **Customers by Sales:** customer 14646 leads at 4,372, followed by the Unknown segment at 3,130, then customers 15769 (2,100), 16029 (2,032), 17133 (1,882), 17511 (1,846), 14680 (1,195), and 15061 (1,120).
+- **Product Performance matrix (top rows):**
+  - StockCode 85123A: £69,926.36 sales, 1,540 transactions, 25,630 units, rank 1
+  - StockCode 22423: £46,053.52 sales, 738 transactions, 3,682 units, rank 2
+  - StockCode DOT: £42,680.28 sales, 360 transactions, 360 units, rank 3
+  - StockCode 85099B: £37,805.43 sales, 889 transactions, 21,209 units, rank 4
+  - Total across all products: £3,817,454.47 sales, 205,319 transactions, 2,394,592 units
 
 ![Detailed Analysis](screenshots/05_dashboard_overview/01_detailed_analysis..png)
 
@@ -912,7 +928,17 @@ This page moves from the overall summary into product and customer level detail.
 
 Subtitle: Why it happened, what needs attention.
 
-This page investigates the factors behind overall performance rather than simply repeating what happened. Four KPI cards report Sales from Identified Customers, Sales from Unknown Customers, Sales Percent of Selected Total, and Cancellation Rate Percent, with the cancellation rate calculated as the proportion of invoices beginning with the letter C. A Cancelled Sales Trend line chart tracks the value of cancelled transactions across the six month period, following a pattern that rises sharply in March before declining and then rising again toward June. A Diagnostic Product Performance matrix extends the Detailed Analysis matrix with Average Transaction Value and Sales Percent of Selected Total for each product. A Geographic Sales Distribution map presents the same country level sales data as a bubble map rather than a bar chart, giving a spatial view of where sales activity concentrates.
+- **Sales from Identified Customers:** £3.31M
+- **Sales from Unknown Customers:** £509.62K
+- **Sales Percent of Selected Total:** 100.00 percent
+- **Cancellation Rate Percent:** 18.71 percent, calculated as the proportion of invoices beginning with the letter C
+- **Cancelled Sales Trend:** starts at approximately £20K in January, drops to a low of approximately £10K in February, spikes to a peak of approximately £68K in March, matching the same month gross sales peak on Page 1, falls to approximately £32K in April, rises slightly to approximately £38K in May, and climbs to approximately £62K in June
+- **Top 10 Products by Sales Volume (diagnostic view):** white hanging heart tea light holder leads, followed by regency cakestand 3 tier, dotcom postage, jumbo bag red retrospot, and party bunting
+- **Diagnostic Product Performance matrix (sample rows):**
+  - StockCode 10002: £2,489.10 sales, 150 transactions, 3,032 units, rank 393, £16.59 average transaction value, 0.07 percent of selected total
+  - StockCode 10123C: £89.42 sales, 26 transactions, 124 units, rank 2,485, £3.44 average transaction value, 0.00 percent of selected total
+  - Total across all products: £3,817,454.47 sales, 205,319 transactions, 2,394,592 units, £18.59 average transaction value, 100.00 percent of selected total
+- **Geographic Sales Distribution:** presented as a bubble map centred on Europe, with the largest bubble over the United Kingdom, replacing the bar chart format used on Page 1
 
 ![Diagnostic Insights](screenshots/05_dashboard_overview/01_diagnostic_insights.png)
 ---
@@ -925,17 +951,17 @@ The Identified versus Unknown Customer Sales chart on Page 2 shows that 13.35 pe
 
 *Recommendation:* Check whether missing CustomerID values cluster around a specific checkout flow or guest checkout option. If so, capturing an identifier at that point could recover a meaningful share of the £0.51 million currently outside customer level analysis.
 
-**Insight 2: Cancellation activity affects a material proportion of invoices.**
+**Insight 2: Cancellation activity affects a material proportion of invoices, and does not consistently track gross sales.**
 
-The `Cancellation Rate Percent` KPI on Page 3 reports 18.71 percent, roughly one in five invoices, based on the 4,394 validated cancellation invoices from Power Query Transformation 6. The Cancelled Sales Trend chart shows this is not constant: cancellation value rises sharply in March, the same period gross sales peak on Page 1, suggesting cancellation volume scales with order volume rather than holding a flat background rate.
+The `Cancellation Rate Percent` KPI on Page 3 reports 18.71 percent, roughly one in five invoices, based on the 4,394 validated cancellation invoices from Power Query Transformation 6. The Cancelled Sales Trend chart shows cancellation value rising sharply to a peak of approximately £68K in March, the same month gross sales peak on Page 1 at approximately £760K, which is consistent with cancellations scaling alongside order volume. However, this relationship breaks down by June: cancelled sales climb back to approximately £62K, nearly matching the March peak, while gross sales only recover to approximately £640K, well short of their own March high. This indicates cancellations spike independently of overall sales volume in at least one period, rather than simply tracking it throughout the six months.
 
-*Recommendation:* Segment `Cancellation Rate Percent` by product and country using the existing slicers to check whether cancellations concentrate in specific items or markets, which would point to a targeted fulfilment issue rather than a general pattern.
+*Recommendation:* Segment `Cancellation Rate Percent` by product and country using the existing slicers to check whether cancellations concentrate in specific items or markets, which would point to a targeted fulfilment issue rather than a general pattern. The June divergence in particular is worth investigating on its own, since it cannot be explained by order volume alone.
 
 **Insight 3: Revenue is heavily concentrated in a small number of products and one country.**
 
-The Top 10 Products charts on Pages 1 and 2 show the white hanging heart tea light holder and regency cakestand leading under both revenue and quantity rankings, confirming genuine top performance rather than a high price on a low volume item. Geographically, the United Kingdom dominates by a wide margin over the other 31 countries combined, indicating the business operates largely as a UK domestic retailer with a long tail of minor international activity.
+The Top 10 Products charts on Pages 1 and 2 show the white hanging heart tea light holder holding the top position under both the revenue ranking on Page 1 and the quantity ranking on Page 2, confirming it as a genuine top performer on both dimensions. Below that top position the two rankings diverge: the regency cakestand 3 tier is the second highest by revenue but only the sixth highest by quantity, indicating it earns more from a higher price point on comparatively fewer units, while the jumbo bag red retrospot ranks second by quantity but lower by revenue. Geographically, the United Kingdom dominates at 301,605 against a combined total of roughly 33,000 across the other 31 countries, indicating the business operates largely as a UK domestic retailer with a long tail of minor international activity.
 
-- *Recommendation:* Prioritize stock availability for the top 10 products, since disruption to any one carries outsized revenue impact. Separately, review `Average Transaction Value by Country` for smaller markets with above-average order value despite low volume, which would flag an under-served market worth deliberate expansion.
+- *Recommendation:* Prioritize stock availability for the white hanging heart tea light holder specifically, given its consistent top position on both metrics. Separately, review `Average Transaction Value by Country` for smaller markets with above-average order value despite low volume, which would flag an under-served market worth deliberate expansion.
 ---
 
 ## Repository Structure
@@ -1018,6 +1044,7 @@ screenshots/
         01_diagnostic_insights.png
         01_executive_overview.png
         Cover_Page.png
+Report.md
 ```
 
 ## Data Source Citation
