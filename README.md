@@ -41,6 +41,8 @@ The dataset used in this project is the **Online Retail II** dataset from the **
 
 The original dataset contains transaction level records from a UK based, registered, non store online retailer. It provides information about invoices, products, quantities, transaction dates, prices, customers, and countries.
 
+The dataset contains transactions from a UK based online retailer selling all occasion gift ware. The original source file spans December 2009 to December 2011, with 1,067,371 rows across 8 columns, 43 countries, 5,942 unique customers, and 5,305 unique products. Each row represents one product line item within a customer invoice.
+
 ![Dataset Loading](screenshots/01_raw_data/01_loading_preview.png)
 
 *Figure 1: Initial loading of the Online Retail II dataset into Power BI Desktop.*
